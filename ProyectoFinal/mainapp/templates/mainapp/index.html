@@ -1,0 +1,14 @@
+<!-- Layout -->
+ {% extends '../layouts/layout.html' %}
+
+<!-- Carpeta static -->
+{% load static %}
+
+<!-- Titulo -->
+ {% block titulo %}
+    {{ titulo }}
+ {% endblock %}
+
+{% block content %}
+    <h1>{{ titulo }}</h1>
+{% endblock %}

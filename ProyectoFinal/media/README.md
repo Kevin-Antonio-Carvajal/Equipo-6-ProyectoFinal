@@ -1,0 +1,1 @@
+# Aquí se guardan las imagenes de los productos
