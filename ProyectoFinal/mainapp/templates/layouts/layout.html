@@ -36,7 +36,7 @@
             <!-- Enlaces a la izquierda -->            
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="#">Comics</a>
+                <a class="nav-link" href="{% url 'buscar_comics' %}">Comics</a>
               </li>
               {% if usuario and usuario.rol == 3 %}
               <li class="nav-item">

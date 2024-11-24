@@ -162,3 +162,12 @@ def crear_comic(request):
         )
         return JsonResponse({'success': True, 'message': 'Comic registrado exitosamente'}, status=200)
     return JsonResponse({'success': False, 'error': 'Metodo invalido'}, status=400)
+
+def buscar_comics(request):
+    # Obtenemos todos los comics, incluida la informacion del vendedor
+    comics = Comic.objects.select_related('vendedor').all()
+    contexto = {
+        'titulo': 'Busqueda de comics',
+        'comics': comics
+    }
+    return render(request, 'mainapp/buscar_comics.html', contexto)

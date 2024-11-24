@@ -36,5 +36,10 @@ urlpatterns = [
         'crear_comic/',
         views.crear_comic,
         name='crear_comic'
+    ),
+    path(
+        'buscar_comics/',
+        views.buscar_comics,
+        name='buscar_comics'
     )
 ]

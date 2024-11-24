@@ -1,0 +1,35 @@
+<!-- Agregamos el layout -->
+{% extends '../layouts/layout.html' %}
+
+<!-- Folder static -->
+{% load static %}
+
+{% block titulo %}
+    {{ titulo }}
+{% endblock %}
+
+<!-- Contenido principal -->
+{% block content %}   
+    <!--Estilos  -->
+    <link rel="stylesheet" href="{% static 'css/buscar_comics.css' %}">
+    <div id="main-container">
+        <!-- Titulo -->
+        <div class="titulo">
+            <h1>{{ titulo }}</h1>
+        </div>
+        <!-- Comics -->
+        <div id="comics">
+            {% for comic in comics %}
+                <div class="comic">
+                    <div class="imagen-container">
+                        <img src="{{ comic.imagen.url }}" alt="imagen del comic">
+                    </div>
+                    <p class="nombre">{{ comic.nombre|slice:":57" }}{% if comic.nombre|length > 57 %}...{% endif %}</p>
+                    <button>Lo quiero</button>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- Javascript -->
+    <script src="{% static 'js/buscar_comics.js' %}"></script>
+{% endblock %}
