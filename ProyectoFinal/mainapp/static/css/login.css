@@ -101,7 +101,7 @@ p {
 }
 
 .back-arrow:hover i {
-    color: #1877f2; 
+    color: #ffc510; 
 }
 
 /* Labels de los campos */
@@ -172,7 +172,7 @@ input::placeholder {
 .auth-button {
     width: 540px;
     height: 48px;
-    background-color: #1877f2; 
+    background-color: #ffc510; 
     color: white;
     border: none;
     border-radius: 5px;
@@ -185,7 +185,7 @@ input::placeholder {
 
 /* Estilo al pasar el cursor (hover) sobre el botón */
 .auth-button:hover {
-    background-color: #145dbf;
+    background-color: #f6db35;
 }
 
 /* Espaciado arriba del botón */
@@ -234,7 +234,7 @@ input::placeholder {
 
 /* Efecto hover para los enlaces dentro de .auth-text y .register-text */
 .auth-text a:hover, .register-text a:hover {
-    color: #1877f2; 
+    color: #ffc510; 
     text-decoration: underline;
 }
 

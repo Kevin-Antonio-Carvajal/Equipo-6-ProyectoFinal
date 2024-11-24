@@ -177,7 +177,7 @@ def buscar_comics(request):
         comics = Comic.objects.select_related('vendedor').all()
     # Si no se encontraron comics
     if not comics:
-        titulo = f"No se han encontraron cómics"
+        titulo = f"No se han encontrado cómics"
     contexto = {
         'titulo': titulo,
         'comics': comics,
