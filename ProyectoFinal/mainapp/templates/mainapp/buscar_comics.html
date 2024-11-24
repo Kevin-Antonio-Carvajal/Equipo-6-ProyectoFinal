@@ -15,21 +15,28 @@
     <div id="main-container">
         <!-- Titulo -->
         <div class="titulo">
-            <h1>{{ titulo }}</h1>
+            <h2>{{ titulo }}</h2>
         </div>
         <!-- Comics -->
-        <div id="comics">
-            {% for comic in comics %}
-                <div class="comic">
-                    <div class="imagen-container">
-                        <img src="{{ comic.imagen.url }}" alt="imagen del comic">
+        {% if comics %}
+            <div id="comics">
+                {% for comic in comics %}
+                    <div class="comic">
+                        <div class="imagen-container">
+                            <img src="{{ comic.imagen.url }}" alt="imagen del comic">
+                        </div>
+                        <p class="nombre">{{ comic.nombre|slice:":57" }}{% if comic.nombre|length > 57 %}...{% endif %}</p>
+                        <button>Lo quiero</button>
                     </div>
-                    <p class="nombre">{{ comic.nombre|slice:":57" }}{% if comic.nombre|length > 57 %}...{% endif %}</p>
-                    <button>Lo quiero</button>
-                </div>
-            {% endfor %}
-        </div>
+                {% endfor %}                        
+            </div>
+        {% else %}
+            <div class="not-found">
+                <img src="{% static 'images/not-found.svg' %}" alt="No hay cómics" width="520px">
+            </div>
+        {% endif %}
     </div>
+    <div id="data-busqueda" data-busqueda="{{ busqueda }}" style="display: none;"></div>
     <!-- Javascript -->
     <script src="{% static 'js/buscar_comics.js' %}"></script>
 {% endblock %}

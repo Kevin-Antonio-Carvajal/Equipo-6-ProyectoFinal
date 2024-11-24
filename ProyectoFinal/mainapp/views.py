@@ -1,11 +1,12 @@
 
+from django.db.models import Q
 from django.contrib import messages
 from django.http import JsonResponse
 from .models import Usuario, Rol, Comic
 from .forms import FormRegistro, FormLogin
 from django.shortcuts import render, redirect
-from mainapp.CryptoUtils import cipher, sha256, validate
 from mainapp.context_processors import get_usuario
+from mainapp.CryptoUtils import cipher, sha256, validate
 
 
 def index(request):
@@ -164,10 +165,22 @@ def crear_comic(request):
     return JsonResponse({'success': False, 'error': 'Metodo invalido'}, status=400)
 
 def buscar_comics(request):
-    # Obtenemos todos los comics, incluida la informacion del vendedor
-    comics = Comic.objects.select_related('vendedor').all()
+    query = request.GET.get('q', '')
+    # Filtrar los cómics según el término de búsqueda
+    titulo = 'Busqueda de comics'
+    if query:
+        comics = Comic.objects.select_related('vendedor').filter(
+            Q(nombre__icontains=query) | Q(descripcion__icontains=query)
+        )
+        titulo = f"Resultados de busqueda para '{query}'"
+    else:
+        comics = Comic.objects.select_related('vendedor').all()
+    # Si no se encontraron comics
+    if not comics:
+        titulo = f"No se encontraron cómics con el término '{query}'"
     contexto = {
-        'titulo': 'Busqueda de comics',
-        'comics': comics
+        'titulo': titulo,
+        'comics': comics,
+        'busqueda': query
     }
     return render(request, 'mainapp/buscar_comics.html', contexto)

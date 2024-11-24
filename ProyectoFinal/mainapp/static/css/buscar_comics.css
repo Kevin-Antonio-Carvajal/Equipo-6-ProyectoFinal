@@ -4,6 +4,11 @@
     align-items: center;
 }
 
+.titulo {
+    color: #252525;
+    margin: 24px;
+}
+
 #comics {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
