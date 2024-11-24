@@ -29,7 +29,7 @@ class Comic(models.Model):
     vendedor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="comics")
     nombre = models.CharField(max_length=255)
     descripcion = models.TextField(null=True, blank=True)
-    ruta_imagen = models.TextField()
+    imagen = models.ImageField(verbose_name='Imagen Comic', upload_to='imagenes_comics')
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
@@ -45,7 +45,7 @@ class Oferta(models.Model):
     servicio = models.BooleanField(default=False)
     aceptada = models.BooleanField(null=True, blank=True)  # NULL significa que aún no se ha decidido
     visto = models.BooleanField(default=False)
-    ruta_imagen = models.TextField()
+    imagen = models.ImageField(verbose_name='Imagen Objeto o Servicio', upload_to='imagenes_trueque')
     fecha_emision = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

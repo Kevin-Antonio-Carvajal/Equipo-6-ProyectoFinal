@@ -1,0 +1,59 @@
+<!-- Agregamos el layout -->
+{% extends '../layouts/layout.html' %}
+
+<!-- Carpeta static -->
+{% load static %}
+
+<!-- Contenido -->
+{% block content %}
+    <!-- Estilos -->
+    <link rel="stylesheet" href="{% static 'css/registrar_comic.css' %}">
+    <div id="main-container">
+        <div id="registrar-comic-container">
+            <!-- Titulo -->
+             <div class="titulo">
+                <i class="fa-solid fa-arrow-left back" onclick="backPage()" style="cursor: pointer;"></i>
+                <h4>{{ titulo }}</h4>
+                <!-- Lo colocamos para distribuir el titulo -->
+                <i class="fa-solid fa-x tache"></i>
+             </div>
+             <!-- Formulario -->
+              <div class="form-container">
+                <h4>Detalles del cómic</h4>
+                <form id="formulario-comic" method="post">
+                    <!-- Nombre -->
+                    <label for="nombre">Nombre del cómic <span class="requerido">*</span></label>
+                    <p><input type="text" name="nombre" placeholder="Ingresa el nombre del cómic" required maxlength="255"></p>
+                    <div id="mensajes-nombre" class="mensajes-container">
+                        <!-- Aqui se ponen los mensajes de error/exito-->
+                    </div>
+                    <!-- Descripcion -->
+                    <label for="Descripcion">Descripcion <span class="requerido">*</span></label>
+                    <p><textarea name="descripcion" placeholder="Ingresa la descripcion del cómic"></textarea></p>
+                    <div id="mensajes-descripcion" class="mensajes-container">
+                        <!-- Aqui se ponen los mensajes de error/exito-->
+                    </div>
+                    <!-- Imagen -->
+                    <label class="descripcion-dropzone-image">Sube una imagen del cómic <span class="requerido">*</span></label>
+                    <div id="imagen-container">
+                        <label id="dropzone-image" for="input-imagen">                            
+                            <div class="imagen-info">
+                                <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                                <p><span class="bold">Haz click para subir</span> o arrastra y suelta</p>
+                                <p>un archivo PNG o JPG</p>
+                            </div>
+                        </label> 
+                    </div>
+                    <div id="mensajes-imagen" class="mensajes-container">
+                        <!-- Aqui se ponen los mensajes de error/exito-->
+                    </div>
+                    <!-- Input donde se carga la imagen -->
+                    <input id="input-imagen" name="imagen" type="file" accept=".jpg, .jpeg, .png" style="display: none;">
+                    <input type="submit" value="Registrar cómic">
+                </form>
+              </div>
+        </div>
+    </div>
+    <!-- Javascript -->
+     <script src="{% static 'js/registrar_comic.js' %}"></script>
+{% endblock %}

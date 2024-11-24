@@ -4,7 +4,8 @@
 *.pyc
 __pycache__
 db.sqlite3
-imagenes_productos/
+imagenes_comics/
+imagenes_trueque/
 # Backup files # 
 *.bak 
 

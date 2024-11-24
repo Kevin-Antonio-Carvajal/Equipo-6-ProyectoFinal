@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
 
 # OJO: NO MODIFIQUES ESTE ARCHIVO, SI VAS A AGREGAR RUTAS
 # HAZLO DESDE LA CARPETA mainapp EN EL ARCHIVO urls.py
@@ -23,3 +24,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('mainapp.urls')) # Incluimos las rutas de mainapp
 ]
+
+# Ruta imagenes
+if settings.DEBUG:
+    from django.conf.urls.static import static
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

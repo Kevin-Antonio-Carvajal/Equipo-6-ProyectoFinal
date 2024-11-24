@@ -26,5 +26,15 @@ urlpatterns = [
         'logout/',
         views.logout,
         name='logout'
+    ),
+    path(
+        'registrar_comic/',
+        views.registrar_comic,
+        name='registrar_comic'
+    ),
+    path(
+        'crear_comic/',
+        views.crear_comic,
+        name='crear_comic'
     )
 ]

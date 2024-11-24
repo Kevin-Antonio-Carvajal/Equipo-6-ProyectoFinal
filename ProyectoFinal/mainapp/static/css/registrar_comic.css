@@ -1,0 +1,137 @@
+#main-container {
+    display: flex;
+    justify-content: center;
+}
+
+.titulo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.titulo .tache {
+    visibility: hidden;
+}
+
+#registrar-comic-container {
+    width: 480px;
+    padding: 24px 0px;
+}
+
+.form-container {
+    background-color: #FFF;
+    border-radius: 6px;
+    padding: 24px 16px;
+    box-shadow:rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    font-size: small;
+}
+
+#formulario-comic p{
+    margin-bottom: 0px;
+}
+
+#formulario-comic > label {
+    margin-top: 16px;
+}
+
+input, textarea {
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px;
+    background-color: #FFF;
+    border: 1px solid #252525;
+}
+
+textarea {
+    min-height: 120px;
+    max-height: 240px;
+}
+
+#imagen-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#imagen-container i.tache {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+#imagen-container i.tache:hover {
+    color: #ee5454;
+}
+
+#imagen-container img {
+    width: 200px;
+}
+
+#dropzone-image {
+    margin-top: 8px;
+    border: 1px dashed #9D9D9D;
+    border-radius: 6px;
+    width: 100%;
+    background-color: #FCFCFC;
+}
+
+#dropzone-image.dragover {
+    background-color: #f6db35;
+}
+
+#dropzone-image:hover {
+    background-color: #F8F8F8;
+    cursor: pointer;
+}
+
+#dropzone-image .imagen-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 56px;
+    color: #9D9D9D;
+}
+
+span.bold {
+    font-weight: bold;
+}
+
+#dropzone-image .imagen-info i{
+    font-size: 28px;
+    margin-bottom: 8px;    
+}
+
+#dropzone-image .imagen-info p{
+    padding: 2px;
+    margin: 2px;
+}
+
+#input-imagen {
+    display: none;
+}
+
+input[type='submit'] {
+    background-color: #252525;
+    color: #FFF;
+}
+
+p.descripcion-dropzone-image {
+    margin: 0px;
+    margin-bottom: 8px;
+}
+span.requerido {
+    color: #ee5454;
+}
+
+/* Mensajes */
+
+.mensaje-error {
+    color: #ee5454;
+}
+
+input.disabled {
+    background-color: #404040;
+}

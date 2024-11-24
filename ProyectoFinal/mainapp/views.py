@@ -1,9 +1,11 @@
 
-from .models import Usuario, Rol
 from django.contrib import messages
+from django.http import JsonResponse
+from .models import Usuario, Rol, Comic
 from .forms import FormRegistro, FormLogin
 from django.shortcuts import render, redirect
 from mainapp.CryptoUtils import cipher, sha256, validate
+from mainapp.context_processors import get_usuario
 
 
 def index(request):
@@ -109,3 +111,54 @@ def logout(request):
     messages.success(request, 'Has cerrado sesión exitosamente')
     # Redirigimos al usuario a la página de inicio de sesión
     return redirect('login')
+
+def registrar_comic(request):
+    # Obtenemos el usuario que inicio sesion
+    usuario_contexto = get_usuario(request)
+    usuario = usuario_contexto.get('usuario')
+    # Verificamos que se haya iniciado sesion
+    if usuario is None:
+        messages.error(request, 'Debes iniciar sesión para registrar un producto')
+        return redirect('login')
+    # Verificamos que el usuario sea vendedor
+    if usuario['rol'] != 3:
+        messages.error(request, 'Solo los vendedores pueden registrar un producto')
+        return redirect('index')
+    contexto = {
+        'titulo': 'Registrar Nuevo Cómic'
+    }
+    return render(request, 'mainapp/registrar_comic.html', contexto)
+
+def crear_comic(request):    
+    if request.method == 'POST':
+        # Obtenemos el usuario que inicio sesion
+        usuario_contexto = get_usuario(request)
+        usuario = usuario_contexto.get('usuario')
+        # Verificamos que se haya iniciado sesion
+        if usuario is None:
+            return JsonResponse({'success': False, 'error': 'Debes iniciar sesion para registrar un producto'}, status=403)
+        # Verificamos el rol del usuario
+        if usuario['rol'] != 3:
+            return JsonResponse({'success': False, 'error': 'Solo los vendedores pueden registrar un producto'}, status=403)
+        # Obtenemos los datos del formulario
+        nombre = request.POST.get('nombre')
+        descripcion = request.POST.get('descripcion')
+        imagen = request.FILES.get('imagen')
+        # Validamos la información
+        if not nombre or not imagen:
+            return JsonResponse({'success': False, 'error': 'El nombre y la imagen son obligatorios'}, status=400)
+        # Obtenemos el vendedor
+        vendedor = None
+        try:
+            vendedor = Usuario.objects.get(id_usuario=usuario['id'])
+        except Usuario.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'El vendedor no existe'}, status=404)
+        # Creamos el producto
+        comic = Comic.objects.create(
+            vendedor=vendedor,
+            nombre=nombre,
+            descripcion=descripcion,
+            imagen=imagen
+        )
+        return JsonResponse({'success': True, 'message': 'Comic registrado exitosamente'}, status=200)
+    return JsonResponse({'success': False, 'error': 'Metodo invalido'}, status=400)
