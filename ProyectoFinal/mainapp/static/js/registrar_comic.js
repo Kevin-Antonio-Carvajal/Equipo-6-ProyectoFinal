@@ -130,11 +130,7 @@ const limpiarInputImagen = () => {
 const cargaEventosFormularioComic = () => {
     const formularioComic = document.getElementById('formulario-comic')
     formularioComic.addEventListener('submit', async (event) => {
-        event.preventDefault()
-        // Deshabilitamos el boton de registrar comic
-        const botonEnviar = formularioComic.querySelector('input[type="submit"]')
-        botonEnviar.disabled = true
-        botonEnviar.classList.add('disabled')
+        event.preventDefault()        
         // FormData
         const formData = new FormData(formularioComic)
         // Accedemos a los valores del formulario
@@ -151,44 +147,47 @@ const cargaEventosFormularioComic = () => {
         }
         // Enviamos los datos al backend para crear el nuevo comic
         try{
+            // Deshabilitamos el boton de registrar comic
+            const botonEnviar = formularioComic.querySelector('input[type="submit"]')
+            botonEnviar.disabled = true
+            botonEnviar.classList.add('disabled')
             // Esperamos la resolucion            
             const response = await servicioCrearNuevoComic(formData)
             // Si la peticion fue exitosa
             if (response.success) {
-                console.log(`Respuesta: ${response.message}`)
+                console.log(`Respuesta exito: ${response.message}`)
+                // Redirigimos a la pagina principal
+                window.location.href = '/inicio'
             } else {
-                console.log(`Respuesta: ${response.error}`)
+                console.log(`Respuesta error: ${response.error}`)
             }
         } catch(error) {
             console.log(`Hubo un error mientras se esperaba la creacion del nuevo comic ${error}`)
         } finally{
             // Habilitamos el boton nuevamente
             botonEnviar.disabled = false
-            botonEnviar.classList.remove('disabled')
-            // Redirigimos a la pagina principal
-            window.location.href = '/inicio'
+            botonEnviar.classList.remove('disabled')            
         }
     })
 }
 
 const servicioCrearNuevoComic = async (formData) => {    
-    try{
-        const csrftoken = getCookie('csrftoken')
-        const url = `/crear_comic/`
-        const response = await fetch(url, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRFToken': csrftoken
-            },
-            credentials: 'same-origin'
-        })
-        const data = await response.json()
-        return data
-    } catch (error) {
-        console.log('Hubo un error al intentar mandar la informacion')
-        throw error
+    const csrftoken = getCookie('csrftoken')
+    const url = `/crear_comic/`
+    const response = await fetch(url, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': csrftoken,
+            'accept': 'application/json'
+        },
+        credentials: 'same-origin'
+    })
+    if (!response.ok) {
+        throw new Error(`Error en la peticion: ${response.status}`)
     }
+    const data = await response.json()
+    return data
 }
 
 /**
