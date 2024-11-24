@@ -5,11 +5,26 @@ urlpatterns = [
     path(
         '',             # Ruta
         views.index,    # Vista
-        name='inicio'   # Nombre
+        name='index'   # Nombre
     ),
     path(
         'inicio/',
         views.index,
         name='inicio'
+    ),
+    path(
+        'register/',
+        views.register,
+        name='register'
+    ),
+    path(
+        'login/',
+        views.login,
+        name='login'
+    ),
+    path(
+        'logout/',
+        views.logout,
+        name='logout'
     )
 ]
