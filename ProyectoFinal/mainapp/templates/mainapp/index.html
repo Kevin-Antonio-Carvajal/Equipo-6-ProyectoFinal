@@ -10,5 +10,31 @@
  {% endblock %}
 
 {% block content %}
-    <h1>{{ titulo }}</h1>
+    <!-- Estilos -->
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <!-- lil-gui -->
+    <link href="https://cdn.jsdelivr.net/npm/lil-gui@0.20.0/dist/lil-gui.min.css" rel="stylesheet">
+    <div id="main-container">
+        <canvas class="webgl"></canvas>
+        <div id="over">
+            <p>TODOS LOS COMICS</p>
+            <h1>A TU ALCANCE</h1>
+            <p>COMIENZA A COMPRAR</p>
+            <a href="{% url 'buscar_comics' %}">Ver Comics</a>
+        </div>
+    </div>
+    <div>
+        <h1>Holiwis</h1>
+    </div>
+    <!-- Threejs -->
+    <script type="importmap">
+        {
+            "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.166.1/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.166.1/examples/jsm/"
+            }
+        }
+    </script>    
+    <!-- Javascript -->
+    <script type="module" src="{% static 'js/index.js' %}"></script>
 {% endblock %}
