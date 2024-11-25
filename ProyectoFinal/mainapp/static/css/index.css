@@ -3,9 +3,20 @@
     padding: 0px;
 }
 
+html,
+body {
+    overflow-x: hidden;
+}
+
 .webgl {
     width: 100%;
     /* height: 600px !important; */
+    cursor: grab;
+}
+
+/* Cerramos la manita */
+.webgl:active {
+    cursor: grabbing;
 }
 
 #threejs-container {
@@ -27,6 +38,7 @@
     font-weight: 400;
     font-style: normal;
     letter-spacing: 4px;
+    pointer-events: none;
 }
 
 #over h1 {
@@ -45,12 +57,13 @@
     padding: 24px;
     letter-spacing: 2px;
     font-size: 16px;
+    pointer-events: auto;
 }
 
 #over a:hover {
     padding: 26px;
     border: 6px solid #FFF;
-    font-size: 18px;
+    font-size: 18px;    
 }
 
 #about-us {
@@ -87,9 +100,19 @@
 
 #comics-seccion {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 120px;
+}
+
+#comics-seccion h2 {
+    font-family: "Bangers", system-ui;
+    letter-spacing: 2px;
+    color: #ffc510;
+    -webkit-text-stroke: 1px #252525; /* Contorno negro de 2px */
+    text-stroke: 2px #252525; /* Estándar (para compatibilidad futura) */
+    margin-bottom: 48px;
 }
 
 #comics {

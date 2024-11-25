@@ -20,7 +20,7 @@
             <p>TODOS LOS COMICS</p>
             <h1>A TU ALCANCE</h1>
             <p>COMIENZA A COMPRAR</p>
-            <a href="{% url 'buscar_comics' %}">Ver Comics</a>
+            <a href="{% url 'register' %}">Registrarse</a>
         </div>        
     </div>    
     <div id="about-us">
@@ -44,6 +44,7 @@
         </div>
     </div>
     <div id="comics-seccion">
+        <h2>Cómics registrados recientemente</h2>
         <div id="comics">
             {% for comic in comics %}
                 <div class="comic">
