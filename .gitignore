@@ -3,9 +3,9 @@
 *.pot
 *.pyc
 __pycache__
-db.sqlite3
-imagenes_comics/
-imagenes_trueque/
+# db.sqlite3
+# imagenes_comics/
+# imagenes_trueque/
 # Backup files # 
 *.bak 
 

@@ -14,17 +14,47 @@
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <!-- lil-gui -->
     <link href="https://cdn.jsdelivr.net/npm/lil-gui@0.20.0/dist/lil-gui.min.css" rel="stylesheet">
-    <div id="main-container">
+    <div id="threejs-container">
         <canvas class="webgl"></canvas>
         <div id="over">
             <p>TODOS LOS COMICS</p>
             <h1>A TU ALCANCE</h1>
             <p>COMIENZA A COMPRAR</p>
             <a href="{% url 'buscar_comics' %}">Ver Comics</a>
+        </div>        
+    </div>    
+    <div id="about-us">
+        <div class="carta">
+            <div class="image-container">
+                <img src="{% static 'images/spiderman.png' %}" alt="">
+            </div>
+            <p>En nuestra tienda de cómics, creemos en la magia de compartir historias. No solo ofrecemos cómics fascinantes, sino que permitimos a los compradores intercambiar objetos o servicios por ellos, fomentando una comunidad única.</p>
+        </div>
+        <div class="carta">
+            <div class="image-container">
+                <img src="{% static 'images/tanjiro.png' %}" alt="">
+            </div>
+            <p>Nuestra pasión por los cómics nos llevó a reinventar la forma de adquirirlos. Aquí, los trueques cobran vida, permitiendo que cada cómic tenga un valor especial más allá del dinero.</p>
+        </div>
+        <div class="carta">
+            <div class="image-container">
+                <img src="{% static 'images/superman.png' %}" alt="">
+            </div>
+            <p>Promovemos una experiencia creativa y accesible para todos los amantes de los cómics. Intercambia objetos o servicios, conecta con otros fanáticos y descubre historias inolvidables en un entorno acogedor y original.</p>
         </div>
     </div>
-    <div>
-        <h1>Holiwis</h1>
+    <div id="comics-seccion">
+        <div id="comics">
+            {% for comic in comics %}
+                <div class="comic">
+                    <div class="imagen-container">
+                        <img src="{{ comic.imagen.url }}" alt="imagen del comic">
+                    </div>
+                    <p class="nombre">{{ comic.nombre|slice:":57" }}{% if comic.nombre|length > 57 %}...{% endif %}</p>
+                    <button>Lo quiero</button>
+                </div>
+            {% endfor %}
+        </div>
     </div>
     <!-- Threejs -->
     <script type="importmap">

@@ -81,7 +81,8 @@ controls.enableDamping = true
  * Renderer
  */
 const rendererParameters = {}
-rendererParameters.clearColor = '#26132f'
+// rendererParameters.clearColor = '#26132f'
+rendererParameters.clearColor = '#FFFFFF'
 
 
 const renderer = new THREE.WebGLRenderer({

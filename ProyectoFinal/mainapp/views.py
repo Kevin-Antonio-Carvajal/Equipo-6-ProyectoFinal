@@ -11,8 +11,12 @@ from mainapp.CryptoUtils import cipher, sha256, validate
 
 def index(request):
 
+    # Obtener los 6 cómics más recientes
+    comics_recientes = Comic.objects.order_by('-created_at')[:6]
+
     contexto = {
-        'titulo': 'Pagina principal'
+        'titulo': 'Pagina principal',
+        'comics': comics_recientes
     }
 
     return render(request, 'mainapp/index.html', contexto)
