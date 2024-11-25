@@ -137,23 +137,31 @@ def crear_comic(request):
         usuario = usuario_contexto.get('usuario')
         # Verificamos que se haya iniciado sesion
         if usuario is None:
-            return JsonResponse({'success': False, 'error': 'Debes iniciar sesion para registrar un producto'}, status=403)
+            error = 'Debes iniciar sesion para registrar un producto'
+            messages.error(request, error)
+            return JsonResponse({'success': False, 'error': error}, status=403)
         # Verificamos el rol del usuario
         if usuario['rol'] != 3:
-            return JsonResponse({'success': False, 'error': 'Solo los vendedores pueden registrar un producto'}, status=403)
+            error = 'Solo los vendedores pueden registrar un producto'
+            messages.error(request, error)
+            return JsonResponse({'success': False, 'error': error}, status=403)
         # Obtenemos los datos del formulario
         nombre = request.POST.get('nombre')
         descripcion = request.POST.get('descripcion')
         imagen = request.FILES.get('imagen')
         # Validamos la información
         if not nombre or not imagen:
-            return JsonResponse({'success': False, 'error': 'El nombre y la imagen son obligatorios'}, status=400)
+            error = 'El nombre y la imagen son obligatorios'
+            messages.error(request, error)
+            return JsonResponse({'success': False, 'error': error}, status=400)
         # Obtenemos el vendedor
         vendedor = None
         try:
             vendedor = Usuario.objects.get(id_usuario=usuario['id'])
         except Usuario.DoesNotExist:
-            return JsonResponse({'success': False, 'error': 'El vendedor no existe'}, status=404)
+            error = 'El vendedor no existe'
+            messages.error(request, error)
+            return JsonResponse({'success': False, 'error': error}, status=404)
         # Creamos el producto
         comic = Comic.objects.create(
             vendedor=vendedor,
@@ -161,7 +169,9 @@ def crear_comic(request):
             descripcion=descripcion,
             imagen=imagen
         )
-        return JsonResponse({'success': True, 'message': 'Comic registrado exitosamente'}, status=200)
+        success = 'Comic registrado exitosamente'
+        messages.success(request, success)
+        return JsonResponse({'success': True, 'message': success}, status=200)
     return JsonResponse({'success': False, 'error': 'Metodo invalido'}, status=400)
 
 def buscar_comics(request):
