@@ -39,8 +39,8 @@ class Comic(models.Model):
 # TABLA OFERTA
 class Oferta(models.Model):
     id_oferta = models.AutoField(primary_key=True)
-    emisor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="ofertas_enviadas")
-    receptor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="ofertas_recibidas")
+    comic = models.ForeignKey(Comic, on_delete=models.CASCADE, null=True, blank=True, related_name="ofertas")
+    receptor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="ofertas_recibidas")    
     objeto = models.CharField(max_length=255)
     descripcion = models.TextField(null=True, blank=True)
     servicio = models.BooleanField(default=False)
@@ -51,6 +51,18 @@ class Oferta(models.Model):
 
     def __str__(self):
         return f"Oferta {self.id_oferta} - {self.objeto}"
+
+# TABLA VENTA
+class Venta(models.Model):
+    id_venta = models.AutoField(primary_key=True)
+    comic = models.OneToOneField(Comic, on_delete=models.CASCADE, related_name="venta")  # Relación directa con el cómic vendido
+    comprador = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="ventas_recibidas")
+    oferta = models.OneToOneField(Oferta, on_delete=models.CASCADE, null=True, blank=True, related_name="venta")  # Relacionar con la oferta aceptada
+    fecha_venta = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.comic.nombre} vendido por {self.comic.vendedor.username} a {self.comprador.username}"
+
 
 # TABLA MENSAJE
 class Mensaje(models.Model):

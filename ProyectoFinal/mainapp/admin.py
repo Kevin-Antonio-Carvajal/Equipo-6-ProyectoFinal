@@ -28,7 +28,7 @@ class ComicAdmin(admin.ModelAdmin):
 class OfertaAdmin(admin.ModelAdmin):
     readonly_fields = (
         'id_oferta',
-        'emisor',
+        'comic',
         'receptor',
         'fecha_emision'
     )

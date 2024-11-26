@@ -66,7 +66,7 @@ ON UPDATE CASCADE;
 --
 CREATE TABLE `Oferta` (
     `id_oferta` INT NOT NULL AUTO_INCREMENT UNIQUE,
-    `id_emisor` INT NO NULL, -- Comprador
+    `id_comic` INT NO NULL, -- Comic
     `id_receptor` INT NOT NULL, -- Vendedor
     `objeto` VARCHAR(255) NOT NULL,
     `descripcion` TEXT DEFAULT NULL,
