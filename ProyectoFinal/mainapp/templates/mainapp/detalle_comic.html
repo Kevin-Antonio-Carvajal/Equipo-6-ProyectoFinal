@@ -1,28 +1,46 @@
 {% extends '../layouts/layout.html' %}
 {% load static %}
 
-{% block content %}
-<link rel="stylesheet" href="{% static 'css/detalle_comic.css' %}">
+{% block titulo %}
+    {{ titulo }}
+{% endblock %}
 
-<div id="product-container">
-    <!-- Botón regresar centrado -->
-    <div class="return-button-container">
-        <a href="{% url 'buscar_comics' %}?q=" class="btn btn-warning">Regresar</a>
-    </div>
-    <div class="product-detail">
-        <div class="image-container">
-            <img src="{{ comic.imagen.url }}" alt="Imagen del cómic">
+{% block content %}
+<!-- Estilos -->
+<link rel="stylesheet" href="{% static 'css/detalle_comic.css' %}">
+<!-- Contenido principal -->
+<div id="main-container">
+    <div id="product-container">
+        <!-- Titulo -->
+        <div class="titulo">
+            <i class="fa-solid fa-arrow-left back" onclick="backPage()" style="cursor: pointer;"></i>
+            <h4>Detalles del comic</h4>
+            <!-- Lo colocamos para distribuir el titulo -->
+            <i class="fa-solid fa-x tache"></i>
         </div>
-        <div class="details-container">
-            <h1>{{ comic.nombre }}</h1>
-            <p><strong>Vendedor:</strong> {{ comic.vendedor.username }}</p>
-            <p><strong>Precio:</strong> ${{ comic.precio }}</p>
-            <p><strong>Descripción:</strong> {{ comic.descripcion }}</p>
-            <form method="POST" action="{% url 'agregar_a_lista_deseos' comic.id_comic %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-primary">Agregar a la Lista de Deseos</button>
-            </form>
+        <div class="product-detail">        
+            <div class="image-container">
+                <img src="{{ comic.imagen.url }}" alt="Imagen del cómic">
+            </div>
+            <div class="details-container">
+                <h1>{{ comic.nombre }}</h1>
+                <p><strong>Vendedor:</strong> {{ comic.vendedor.username }}</p>
+                <p><strong>Descripción:</strong> {{ comic.descripcion }}</p>
+                <form method="POST" action="{% url 'agregar_a_lista_deseos' comic.id_comic %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Agregar a la Lista de Deseos</button>
+                </form>
+                <!-- <a href="{% url 'buscar_comics' %}?q=" class="btn btn-warning">Regresar</a> -->
+            </div>
         </div>
     </div>
 </div>
+<!-- Javascript -->
+<script>
+    // Regresa a la pagina anterior
+    const backPage = () => {
+        // Regresamos a la pagina anterior
+        window.history.back();
+    }
+</script>
 {% endblock %}

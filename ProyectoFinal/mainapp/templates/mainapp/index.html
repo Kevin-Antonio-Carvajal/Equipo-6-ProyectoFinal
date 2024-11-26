@@ -1,5 +1,5 @@
 <!-- Layout -->
- {% extends '../layouts/layout.html' %}
+{% extends '../layouts/layout.html' %}
 
 <!-- Carpeta static -->
 {% load static %}
@@ -51,8 +51,11 @@
                     <div class="imagen-container">
                         <img src="{{ comic.imagen.url }}" alt="imagen del comic">
                     </div>
-                    <p class="nombre">{{ comic.nombre|slice:":57" }}{% if comic.nombre|length > 57 %}...{% endif %}</p>
-                    <button>Lo quiero</button>
+                    <p class="nombre"><a href="{% url 'detalle_comic' comic.id_comic %}">{{ comic.nombre|slice:":57" }}{% if comic.nombre|length > 57 %}...{% endif %}</a></p>
+                    <form method="POST" action="{% url 'agregar_a_lista_deseos' comic.id_comic %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Lo quiero</button>
+                    </form>
                 </div>
             {% endfor %}
         </div>

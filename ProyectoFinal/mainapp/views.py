@@ -239,7 +239,7 @@ def agregar_a_lista_deseos(request, comic_id):
             ListaDeseos.objects.create(usuario=usuario, comic=comic)
             messages.success(request, "El cómic se agregó a tu lista de deseos.")
         
-        return redirect('detalle_comic', comic_id=comic.id_comic)
+        return redirect('ver_lista_deseos')
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 def eliminar_de_lista_deseos(request, comic_id):
@@ -253,10 +253,10 @@ def eliminar_de_lista_deseos(request, comic_id):
     try:
         # Intentar eliminar el cómic de la lista de deseos
         ListaDeseos.objects.filter(usuario_id=usuario['id'], comic_id=comic_id).delete()
+        # messages.success(request, 'Cómic eliminado de tu lista de deseos')
         return JsonResponse({'success': True, 'message': 'Cómic eliminado de tu lista de deseos'}, status=200)
     except Exception as e:
         # Log para depuración
         print(f"Error al eliminar el cómic: {e}")
+        # messages.error(request, 'Error al eliminar el comic')
         return JsonResponse({'success': False, 'error': 'Error al eliminar el comic.'}, status=500)
-
-

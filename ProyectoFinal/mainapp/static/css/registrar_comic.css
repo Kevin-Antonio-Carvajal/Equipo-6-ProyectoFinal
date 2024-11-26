@@ -135,3 +135,12 @@ span.requerido {
 input.disabled {
     background-color: #404040;
 }
+
+i.back {
+    cursor: pointer;
+}
+
+/* Regreso */
+i.back:hover {
+    color: #ffc510;    
+}

@@ -6,45 +6,35 @@
 {% endblock %}
 
 {% block content %}
+<!-- Estilos -->
 <link rel="stylesheet" href="{% static 'css/lista_deseos.css' %}">
-
-<div id="wishlist-container">
-    <!-- Botón regresar centrado -->
-    <div class="return-button-container">
-        <a href="{% url 'buscar_comics' %}?q=" class="btn btn-warning">Regresar</a>
-    </div>
-
-    <div class="titulo">
-        <h2>{{ titulo }}</h2>
-    </div>
-
-    <!-- Comics -->
-    {% if lista_deseos %}
-        <div class="wishlist">
-            {% for item in lista_deseos %}
-                <div class="comic">
-                    <div class="imagen-container">
-                        <a href="{% url 'detalle_comic' item.comic.id_comic %}">
-                            <img src="{{ item.comic.imagen.url }}" alt="Imagen del cómic">
-                        </a>
-                    </div>
-                    <h3>
-                        <a href="{% url 'detalle_comic' item.comic.id_comic %}">
-                            {{ item.comic.nombre|slice:":57" }}{% if item.comic.nombre|length > 57 %}...{% endif %}
-                        </a>
-                    </h3>
-                    <p>{{ item.comic.descripcion|slice:":80" }}{% if item.comic.descripcion|length > 80 %}...{% endif %}</p>
-                    <form method="POST" action="{% url 'eliminar_deseo' item.comic.id_comic %}">
-                        {% csrf_token %}
-                        <button class="btn btn-danger">Eliminar</button>
-                    </form>
+<!-- Contenido principal -->
+<div id="main-container">
+    <div id="wishlist-container">
+        <div class="titulo">
+            <i class="fa-solid fa-arrow-left back" onclick="backPage()" style="cursor: pointer;"></i>
+            <h4>{{ titulo }}</h4>
+            <!-- Lo colocamos para distribuir el titulo -->
+            <i class="fa-solid fa-x tache"></i>
+        </div>
+        {% if lista_deseos %}
+            <div id="lista-deseos" class="wishlist">                
+                {% for item in lista_deseos %}
+                <div id="comic-{{ item.comic.id_comic }}" class="comic">
+                    <img src="{{ item.comic.imagen.url }}" alt="Imagen del cómic">
+                    <h3>{{ item.comic.nombre }}</h3>
+                    <p>{{ item.comic.descripcion|slice:":100" }}...</p>                
+                    <button onclick="eliminarComic({{ item.comic.id_comic }})">Eliminar</button>
                 </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="not-found">
+                {% endfor %}            
+            </div>            
+        {% endif %}
+        <div id="not-found" class="{% if lista_deseos %}hidden{% endif %}">
             <p>No tienes cómics en tu lista de deseos.</p>
+            <img src="{% static 'images/not-found.svg' %}" alt="No hay cómics" width="520px">
         </div>
-    {% endif %}
+    </div>
 </div>
+<!-- Javascript -->
+ <script src="{% static 'js/lista_deseos.js' %}"></script>
 {% endblock %}
