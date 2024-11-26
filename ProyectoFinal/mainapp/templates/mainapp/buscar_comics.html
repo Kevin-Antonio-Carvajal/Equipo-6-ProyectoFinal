@@ -32,10 +32,13 @@
                         <p class="nombre">
                             <a href="{% url 'detalle_comic' comic.id_comic %}">{{ comic.nombre|slice:":57" }}{% if comic.nombre|length > 57 %}...{% endif %}</a>
                         </p>
-                        <form method="POST" action="{% url 'agregar_a_lista_deseos' comic.id_comic %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-primary">Lo quiero</button>
-                        </form>
+                        <!-- Solo los usuarios con rol de comprador pueden agregar a la lista de deseos -->
+                        {% if usuario.rol == 2 %}
+                            <form method="POST" action="{% url 'agregar_a_lista_deseos' comic.id_comic %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">Lo quiero</button>
+                            </form>
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>

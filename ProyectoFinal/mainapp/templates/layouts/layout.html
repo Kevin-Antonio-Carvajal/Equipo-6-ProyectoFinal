@@ -56,9 +56,12 @@
             <!-- Enlaces a la derecha -->
             <ul class="navbar-nav ms-auto">
                 {% if usuario %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'ver_lista_deseos' %}">Lista de Deseos</a>
-                </li>
+                <!-- Solo los usuarios con rol de comprador pueden ver su lista de deseos -->
+                {% if usuario.rol == 2 %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'ver_lista_deseos' %}">Lista de Deseos</a>
+                    </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>
                 </li>

@@ -214,12 +214,17 @@ def detalle_comic(request, comic_id):
     return render(request, 'mainapp/detalle_comic.html', contexto)
 
 def ver_lista_deseos(request):
+    # Obtenemos el usuario que inicio sesion
     usuario_contexto = get_usuario(request)
     usuario = usuario_contexto.get('usuario')
-
+    # Verificamos que se haya iniciado sesion
     if usuario is None:
-        messages.error(request, 'Debes iniciar sesión para ver tu lista de deseos')
+        messages.error(request, 'Debes iniciar sesión para registrar un producto')
         return redirect('login')
+    # Verificamos que el usuario sea un comprador
+    if usuario['rol'] != 2:
+        messages.error(request, 'Solo los compradores pueden ver su lista de deseos')
+        return redirect('index')
 
     lista_deseos = ListaDeseos.objects.filter(usuario__id_usuario=usuario['id'])
     contexto = {
@@ -230,11 +235,23 @@ def ver_lista_deseos(request):
 
 def agregar_a_lista_deseos(request, comic_id):
     if request.method == "POST":
+        # Obtenemos el usuario que inicio sesion
+        usuario_contexto = get_usuario(request)
+        usuario = usuario_contexto.get('usuario')
+        # Verificamos que se haya iniciado sesion
+        if usuario is None:
+            messages.error(request, 'Debes iniciar sesión para agregar a la lista de deseos')
+            return redirect('login')
+        # Verificamos que el usuario sea un comprador
+        if usuario['rol'] != 2:
+            messages.error(request, 'Solo los compradores pueden agregar a su lista de deseos')
+            return redirect('index')
+
         # Obtener el cómic
         comic = get_object_or_404(Comic, id_comic=comic_id)
         
         # Obtener al usuario logueado
-        usuario = Usuario.objects.get(id_usuario=request.session.get('usuario_id'))
+        usuario = Usuario.objects.get(id_usuario=usuario['id'])
         
         # Verificar si ya está en la lista de deseos
         if ListaDeseos.objects.filter(usuario=usuario, comic=comic).exists():
@@ -248,12 +265,17 @@ def agregar_a_lista_deseos(request, comic_id):
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 def eliminar_de_lista_deseos(request, comic_id):
-    # Obtener al usuario actual desde el contexto
+    # Obtenemos el usuario que inicio sesion
     usuario_contexto = get_usuario(request)
     usuario = usuario_contexto.get('usuario')
 
     if usuario is None:
         return JsonResponse({'success': False, 'error': 'Debes iniciar sesión para modificar la lista de deseos'}, status=403)
+    
+    # Verificamos que el usuario sea un comprador
+    if usuario['rol'] != 2:
+        messages.error(request, 'Solo los compradores pueden eliminar de su lista de deseos')
+        return redirect('index')
 
     try:
         # Intentar eliminar el cómic de la lista de deseos

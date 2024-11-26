@@ -26,11 +26,13 @@
                 <h1>{{ comic.nombre }}</h1>
                 <p><strong>Vendedor:</strong> {{ comic.vendedor.username }}</p>
                 <p><strong>Descripción:</strong> {{ comic.descripcion }}</p>
-                <form method="POST" action="{% url 'agregar_a_lista_deseos' comic.id_comic %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-primary">Agregar a la Lista de Deseos</button>
-                </form>
-                <!-- <a href="{% url 'buscar_comics' %}?q=" class="btn btn-warning">Regresar</a> -->
+                <!-- Solo los compradores pueden agregar a la lista de deseos -->
+                {% if usuario.rol == 2 %}
+                    <form method="POST" action="{% url 'agregar_a_lista_deseos' comic.id_comic %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Agregar a la Lista de Deseos</button>
+                    </form>
+                {% endif %}
             </div>
         </div>
     </div>
