@@ -39,8 +39,9 @@ class Comic(models.Model):
 # TABLA OFERTA
 class Oferta(models.Model):
     id_oferta = models.AutoField(primary_key=True)
-    comic = models.ForeignKey(Comic, on_delete=models.CASCADE, null=True, blank=True, related_name="ofertas")
-    receptor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="ofertas_recibidas")    
+    comic = models.ForeignKey(Comic, on_delete=models.CASCADE, related_name="ofertas")
+    emisor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="ofertas_realizadas")  # El usuario que hace la oferta
+    receptor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="ofertas_recibidas")        
     objeto = models.CharField(max_length=255)
     descripcion = models.TextField(null=True, blank=True)
     servicio = models.BooleanField(default=False)

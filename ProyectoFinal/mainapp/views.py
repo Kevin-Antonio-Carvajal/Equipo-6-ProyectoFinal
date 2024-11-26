@@ -12,8 +12,8 @@ from .models import ListaDeseos
 
 def index(request):
 
-    # Obtener los 6 cómics más recientes
-    comics_recientes = Comic.objects.order_by('-created_at')[:6]
+     # Obtener los 6 cómics más recientes que no han sido vendidos
+    comics_recientes = Comic.objects.filter(venta__isnull=True).order_by('-created_at')[:6]
 
     contexto = {
         'titulo': 'Pagina principal',
@@ -181,18 +181,23 @@ def crear_comic(request):
 
 def buscar_comics(request):
     query = request.GET.get('q', '')
-    # Filtrar los cómics según el término de búsqueda
-    titulo = 'Busqueda de comics'
+    titulo = 'Búsqueda de cómics'
+
     if query:
+        # Filtrar los cómics según el término de búsqueda
         comics = Comic.objects.select_related('vendedor').filter(
-            Q(nombre__icontains=query) | Q(descripcion__icontains=query)
+            Q(nombre__icontains=query) | Q(descripcion__icontains=query),
+            venta__isnull=True  # Asegurarse de incluir solo cómics no vendidos
         )
-        titulo = f"Resultados de busqueda para '{query}'"
+        titulo = f"Resultados de búsqueda para '{query}'"
     else:
-        comics = Comic.objects.select_related('vendedor').all()
-    # Si no se encontraron comics
-    if not comics:
-        titulo = f"No se han encontrado cómics"
+        # Obtener todos los cómics no vendidos
+        comics = Comic.objects.select_related('vendedor').filter(venta__isnull=True)
+
+    # Si no se encontraron cómics
+    if not comics.exists():  # Usar .exists() para verificar si hay resultados
+        titulo = "No se han encontrado cómics"
+
     contexto = {
         'titulo': titulo,
         'comics': comics,
