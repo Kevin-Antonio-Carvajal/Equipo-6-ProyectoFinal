@@ -9,6 +9,11 @@
 <link rel="stylesheet" href="{% static 'css/lista_deseos.css' %}">
 
 <div id="wishlist-container">
+    <!-- Botón regresar centrado -->
+    <div class="return-button-container">
+        <a href="{% url 'buscar_comics' %}?q=" class="btn btn-warning">Regresar</a>
+    </div>
+
     <div class="titulo">
         <h2>{{ titulo }}</h2>
     </div>

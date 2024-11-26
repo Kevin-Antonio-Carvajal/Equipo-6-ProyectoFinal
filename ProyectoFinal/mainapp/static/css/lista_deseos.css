@@ -3,11 +3,33 @@
     background: #f9f9f9;
 }
 
+/* Contenedor del botón "Regresar" */
+.return-button-container {
+    width: 100%;
+    text-align: center; /* Centrar el botón horizontalmente */
+    margin-bottom: 20px; /* Espacio entre el botón y el resto del contenido */
+}
+
+.return-button-container .btn {
+    background-color: #ffc510;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.return-button-container .btn:hover {
+    background-color: #f6db35;
+}
+
 .titulo h2 {
     text-align: center;
-    font-weight: bold; 
-    color: #000; 
-    text-decoration: none; 
+    font-weight: bold;
+    color: #000;
+    text-decoration: none;
     margin-bottom: 20px;
 }
 
@@ -38,7 +60,7 @@
     max-width: 100%;
     height: auto;
     border-radius: 8px;
-    margin-bottom: 15px; 
+    margin-bottom: 15px;
     transition: transform 0.3s ease;
 }
 
@@ -49,18 +71,18 @@
 .comic h3 {
     margin-top: 10px;
     font-size: 18px;
-    margin-bottom: 15px; 
+    margin-bottom: 15px;
 }
 
 .comic h3 a {
-    font-weight: bold; 
-    color: #000; 
-    text-decoration: none; 
+    font-weight: bold;
+    color: #000;
+    text-decoration: none;
 }
 
 .comic h3 a:hover {
-    color: #ff6f61; 
-    text-decoration: underline; 
+    color: #ff6f61;
+    text-decoration: underline;
 }
 
 .comic p {
@@ -89,6 +111,6 @@
     text-align: center;
     margin-top: 40px;
     font-size: 18px;
-    color: #555; 
+    color: #555;
     font-weight: bold;
 }

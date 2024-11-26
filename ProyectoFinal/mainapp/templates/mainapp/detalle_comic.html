@@ -5,6 +5,10 @@
 <link rel="stylesheet" href="{% static 'css/detalle_comic.css' %}">
 
 <div id="product-container">
+    <!-- Botón regresar centrado -->
+    <div class="return-button-container">
+        <a href="{% url 'buscar_comics' %}?q=" class="btn btn-warning">Regresar</a>
+    </div>
     <div class="product-detail">
         <div class="image-container">
             <img src="{{ comic.imagen.url }}" alt="Imagen del cómic">
@@ -18,7 +22,6 @@
                 {% csrf_token %}
                 <button type="submit" class="btn btn-primary">Agregar a la Lista de Deseos</button>
             </form>
-            <a href="{% url 'buscar_comics' %}?q=" class="btn btn-warning">Regresar</a>
         </div>
     </div>
 </div>

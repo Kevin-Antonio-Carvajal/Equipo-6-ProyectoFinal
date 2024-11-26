@@ -1,8 +1,29 @@
 #product-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     padding: 50px;
+}
+
+.return-button-container {
+    width: 100%;
+    text-align: center; /* Centrar el botón horizontalmente */
+    margin-bottom: 20px; /* Espacio entre el botón y el recuadro blanco */
+}
+
+.return-button-container .btn {
+    background-color: #ffc510;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.return-button-container .btn:hover {
+    background-color: #f6db35;
 }
 
 .product-detail {
