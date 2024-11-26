@@ -14,6 +14,10 @@
             <p><strong>Vendedor:</strong> {{ comic.vendedor.username }}</p>
             <p><strong>Precio:</strong> ${{ comic.precio }}</p>
             <p><strong>Descripción:</strong> {{ comic.descripcion }}</p>
+            <form method="POST" action="{% url 'agregar_a_lista_deseos' comic.id_comic %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Agregar a la Lista de Deseos</button>
+            </form>
             <a href="{% url 'buscar_comics' %}?q=" class="btn btn-warning">Regresar</a>
         </div>
     </div>

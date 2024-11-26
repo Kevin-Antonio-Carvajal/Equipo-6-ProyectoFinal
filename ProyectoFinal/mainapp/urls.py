@@ -44,5 +44,20 @@ urlpatterns = [
     ),
     path('comic/<int:comic_id>/', 
          views.detalle_comic, 
-         name='detalle_comic')
+         name='detalle_comic'
+        ),
+    path(
+        'lista_deseos/',
+        views.ver_lista_deseos,
+        name='ver_lista_deseos'
+    ),
+    path(
+        'lista_deseos/agregar/<int:comic_id>/',
+        views.agregar_a_lista_deseos,
+        name='agregar_a_lista_deseos'
+    ),
+
+    path('lista_deseos/eliminar/<int:comic_id>/', 
+         views.eliminar_de_lista_deseos, 
+         name='eliminar_deseo')
 ]

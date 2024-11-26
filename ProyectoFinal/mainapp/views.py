@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from mainapp.context_processors import get_usuario
 from mainapp.CryptoUtils import cipher, sha256, validate
 from django.shortcuts import get_object_or_404
-
+from .models import ListaDeseos
 
 def index(request):
 
@@ -207,3 +207,56 @@ def detalle_comic(request, comic_id):
         'comic': comic
     }
     return render(request, 'mainapp/detalle_comic.html', contexto)
+
+def ver_lista_deseos(request):
+    usuario_contexto = get_usuario(request)
+    usuario = usuario_contexto.get('usuario')
+
+    if usuario is None:
+        messages.error(request, 'Debes iniciar sesión para ver tu lista de deseos')
+        return redirect('login')
+
+    lista_deseos = ListaDeseos.objects.filter(usuario__id_usuario=usuario['id'])
+    contexto = {
+        'titulo': 'Mi Lista de Deseos',
+        'lista_deseos': lista_deseos,
+    }
+    return render(request, 'mainapp/lista_deseos.html', contexto)
+
+def agregar_a_lista_deseos(request, comic_id):
+    if request.method == "POST":
+        # Obtener el cómic
+        comic = get_object_or_404(Comic, id_comic=comic_id)
+        
+        # Obtener al usuario logueado
+        usuario = Usuario.objects.get(id_usuario=request.session.get('usuario_id'))
+        
+        # Verificar si ya está en la lista de deseos
+        if ListaDeseos.objects.filter(usuario=usuario, comic=comic).exists():
+            messages.warning(request, "El cómic ya está en tu lista de deseos.")
+        else:
+            # Agregar el cómic a la lista de deseos
+            ListaDeseos.objects.create(usuario=usuario, comic=comic)
+            messages.success(request, "El cómic se agregó a tu lista de deseos.")
+        
+        return redirect('detalle_comic', comic_id=comic.id_comic)
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+def eliminar_de_lista_deseos(request, comic_id):
+    # Obtener al usuario actual desde el contexto
+    usuario_contexto = get_usuario(request)
+    usuario = usuario_contexto.get('usuario')
+
+    if usuario is None:
+        return JsonResponse({'success': False, 'error': 'Debes iniciar sesión para modificar la lista de deseos'}, status=403)
+
+    try:
+        # Intentar eliminar el cómic de la lista de deseos
+        ListaDeseos.objects.filter(usuario_id=usuario['id'], comic_id=comic_id).delete()
+        return JsonResponse({'success': True, 'message': 'Cómic eliminado de tu lista de deseos'}, status=200)
+    except Exception as e:
+        # Log para depuración
+        print(f"Error al eliminar el cómic: {e}")
+        return JsonResponse({'success': False, 'error': 'Error al eliminar el comic.'}, status=500)
+
+

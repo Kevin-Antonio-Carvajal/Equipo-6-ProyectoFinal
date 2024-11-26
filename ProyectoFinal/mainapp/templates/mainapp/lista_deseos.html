@@ -1,0 +1,28 @@
+{% extends '../layouts/layout.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/lista_deseos.css' %}">
+
+<div id="wishlist-container">
+    <h1>{{ titulo }}</h1>
+
+    <div class="wishlist">
+        {% if lista_deseos %}
+        {% for item in lista_deseos %}
+        <div class="comic">
+            <img src="{{ item.comic.imagen.url }}" alt="Imagen del cómic">
+            <h3>{{ item.comic.nombre }}</h3>
+            <p>{{ item.comic.descripcion|slice:":100" }}...</p>
+            <form method="POST" action="{% url 'eliminar_deseo' item.comic.id_comic %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+            </form>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No tienes cómics en tu lista de deseos.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

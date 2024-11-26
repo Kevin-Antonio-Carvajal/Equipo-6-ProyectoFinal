@@ -62,3 +62,15 @@ class Mensaje(models.Model):
 
     def __str__(self):
         return f"Mensaje de {self.emisor} a {self.receptor}"
+
+class ListaDeseos(models.Model):
+    id_lista = models.AutoField(primary_key=True)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="listas_deseos")
+    comic = models.ForeignKey(Comic, on_delete=models.CASCADE, related_name="en_listas_deseos")
+    fecha_agregado = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('usuario', 'comic') 
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.comic.nombre}"
