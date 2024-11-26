@@ -41,5 +41,8 @@ urlpatterns = [
         'buscar_comics/',
         views.buscar_comics,
         name='buscar_comics'
-    )
+    ),
+    path('comic/<int:comic_id>/', 
+         views.detalle_comic, 
+         name='detalle_comic')
 ]

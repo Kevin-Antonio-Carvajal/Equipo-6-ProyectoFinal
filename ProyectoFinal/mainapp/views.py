@@ -7,6 +7,7 @@ from .forms import FormRegistro, FormLogin
 from django.shortcuts import render, redirect
 from mainapp.context_processors import get_usuario
 from mainapp.CryptoUtils import cipher, sha256, validate
+from django.shortcuts import get_object_or_404
 
 
 def index(request):
@@ -198,3 +199,11 @@ def buscar_comics(request):
         'busqueda': query
     }
     return render(request, 'mainapp/buscar_comics.html', contexto)
+
+def detalle_comic(request, comic_id):
+    comic = get_object_or_404(Comic, id_comic=comic_id)
+    contexto = {
+        'titulo': comic.nombre,
+        'comic': comic
+    }
+    return render(request, 'mainapp/detalle_comic.html', contexto)

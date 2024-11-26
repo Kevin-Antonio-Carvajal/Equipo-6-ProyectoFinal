@@ -1,0 +1,21 @@
+{% extends '../layouts/layout.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/detalle_comic.css' %}">
+
+<div id="product-container">
+    <div class="product-detail">
+        <div class="image-container">
+            <img src="{{ comic.imagen.url }}" alt="Imagen del cómic">
+        </div>
+        <div class="details-container">
+            <h1>{{ comic.nombre }}</h1>
+            <p><strong>Vendedor:</strong> {{ comic.vendedor.username }}</p>
+            <p><strong>Precio:</strong> ${{ comic.precio }}</p>
+            <p><strong>Descripción:</strong> {{ comic.descripcion }}</p>
+            <a href="{% url 'buscar_comics' %}?q=" class="btn btn-warning">Regresar</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

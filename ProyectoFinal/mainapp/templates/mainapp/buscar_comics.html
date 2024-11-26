@@ -23,9 +23,15 @@
                 {% for comic in comics %}
                     <div class="comic">
                         <div class="imagen-container">
-                            <img src="{{ comic.imagen.url }}" alt="imagen del comic">
+                            <!-- Añadimos el enlace a la página de detalle -->
+                            <a href="{% url 'detalle_comic' comic.id_comic %}">
+                                <img src="{{ comic.imagen.url }}" alt="imagen del comic">
+                            </a>
                         </div>
-                        <p class="nombre">{{ comic.nombre|slice:":57" }}{% if comic.nombre|length > 57 %}...{% endif %}</p>
+                        <!-- Añadimos el enlace también al título -->
+                        <p class="nombre">
+                            <a href="{% url 'detalle_comic' comic.id_comic %}">{{ comic.nombre|slice:":57" }}{% if comic.nombre|length > 57 %}...{% endif %}</a>
+                        </p>
                         <button>Lo quiero</button>
                     </div>
                 {% endfor %}
