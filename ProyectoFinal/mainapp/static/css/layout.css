@@ -42,3 +42,26 @@ body {
     color: #FFF;
 }
 
+.alert {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.alert-dismissible .btn-close {
+    background: none;
+    border: none;
+    font-size: 18px;
+}
+

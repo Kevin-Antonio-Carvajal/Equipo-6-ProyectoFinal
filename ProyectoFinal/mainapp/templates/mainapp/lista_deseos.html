@@ -1,28 +1,45 @@
 {% extends '../layouts/layout.html' %}
 {% load static %}
 
+{% block titulo %}
+    {{ titulo }}
+{% endblock %}
+
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/lista_deseos.css' %}">
 
 <div id="wishlist-container">
-    <h1>{{ titulo }}</h1>
-
-    <div class="wishlist">
-        {% if lista_deseos %}
-        {% for item in lista_deseos %}
-        <div class="comic">
-            <img src="{{ item.comic.imagen.url }}" alt="Imagen del cómic">
-            <h3>{{ item.comic.nombre }}</h3>
-            <p>{{ item.comic.descripcion|slice:":100" }}...</p>
-            <form method="POST" action="{% url 'eliminar_deseo' item.comic.id_comic %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger">Eliminar</button>
-            </form>
-        </div>
-        {% endfor %}
-        {% else %}
-        <p>No tienes cómics en tu lista de deseos.</p>
-        {% endif %}
+    <div class="titulo">
+        <h2>{{ titulo }}</h2>
     </div>
+
+    <!-- Comics -->
+    {% if lista_deseos %}
+        <div class="wishlist">
+            {% for item in lista_deseos %}
+                <div class="comic">
+                    <div class="imagen-container">
+                        <a href="{% url 'detalle_comic' item.comic.id_comic %}">
+                            <img src="{{ item.comic.imagen.url }}" alt="Imagen del cómic">
+                        </a>
+                    </div>
+                    <h3>
+                        <a href="{% url 'detalle_comic' item.comic.id_comic %}">
+                            {{ item.comic.nombre|slice:":57" }}{% if item.comic.nombre|length > 57 %}...{% endif %}
+                        </a>
+                    </h3>
+                    <p>{{ item.comic.descripcion|slice:":80" }}{% if item.comic.descripcion|length > 80 %}...{% endif %}</p>
+                    <form method="POST" action="{% url 'eliminar_deseo' item.comic.id_comic %}">
+                        {% csrf_token %}
+                        <button class="btn btn-danger">Eliminar</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="not-found">
+            <p>No tienes cómics en tu lista de deseos.</p>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}
