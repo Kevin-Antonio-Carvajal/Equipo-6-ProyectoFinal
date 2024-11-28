@@ -56,13 +56,6 @@
             <!-- Enlaces a la derecha -->
             <ul class="navbar-nav ms-auto">
                 {% if usuario %}
-                    {% if usuario.rol == 2 %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'ver_lista_deseos' %}">
-                            <i class="fas fa-heart"></i>
-                        </a>
-                    </li>
-                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="#">
                             <i class="fas fa-bell"></i>
@@ -73,6 +66,13 @@
                             <i class="fas fa-comments"></i>
                         </a>
                     </li>
+                    {% if usuario.rol == 2 %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'ver_lista_deseos' %}">
+                            <i class="fas fa-heart"></i>
+                        </a>
+                    </li>
+                    {% endif %}
                     {% if usuario.rol == 3 %}
                     <li class="nav-item">
                         <a class="nav-link" href="#">Ver Ofertas</a>
