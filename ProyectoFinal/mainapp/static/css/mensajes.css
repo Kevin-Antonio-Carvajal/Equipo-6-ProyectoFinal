@@ -84,3 +84,62 @@ html, body {
 .bold {
     font-weight: bold;
 }
+
+/* Chat abierto */
+
+#chat-abierto-contenedor {
+    margin: 0;
+    padding: 0;
+}
+
+#encabezado {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+}
+
+#encabezado p.nombre-comprador {
+    margin: 0;
+    padding: 0;
+    padding-left: 12px;
+}
+
+#encabezado div.imagen-contenedor {
+    width: 48px;
+}
+
+#encabezado div.imagen-contenedor img {
+    width: 100%;
+    border-radius: 50%;
+}
+
+/* Contenedor de mensajes */
+#mensajes-contenedor {
+
+}
+
+/* Barra de escritura */
+#barra-mensajes {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+}
+
+#barra-mensajes i {
+    color: 	#ffc510;
+    font-size: 20px;
+}
+
+#barra-mensajes form {
+    width: 100%;
+    padding: 0px 8px;
+}
+
+#barra-mensajes form input{
+    width: 100%;
+    padding: 8px;
+    border-radius: 20px;
+    border: none;
+    background-color: #F2F2F2;
+}

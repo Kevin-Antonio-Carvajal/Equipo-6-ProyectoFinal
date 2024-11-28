@@ -17,159 +17,43 @@
         </div>
         <!-- Paneles -->
         <div id="paneles-contenedor" class="row">
-        <!-- Panel de chats -->
-        <div id="chats-contenedor" class="col-4">
-            <div class="chat">
-                <div class="imagen-contenedor">
-                    <img src="{% static 'images/default_user.png' %}" alt="imagen del comprador">
-                </div>
-                <div class="informacion-chat">
-                    <p class="nombre-comprador"><span class="bold">Luis Sebastian</span></p>
-                    <p class="ultimo-mensaje">Que te parece si nos...</p>
-                </div>
-                <p class="hora-ultimo-mensaje">12:30</p>
+            <!-- Panel de chats -->
+            <div id="chats-contenedor" class="col-4">
+                <div class="chat">
+                    <div class="imagen-contenedor">
+                        <img src="{% static 'images/default_user.png' %}" alt="imagen del comprador">
+                    </div>
+                    <div class="informacion-chat">
+                        <p class="nombre-comprador"><span class="bold">Luis Sebastian</span></p>
+                        <p class="ultimo-mensaje">Que te parece si nos...</p>
+                    </div>
+                    <p class="hora-ultimo-mensaje">12:30</p>
+                </div>                
             </div>
-            <div class="chat">
-                <div class="imagen-contenedor">
-                    <img src="{% static 'images/default_user.png' %}" alt="imagen del comprador">
+            <!-- Panel chat abierto -->
+            <div id="chat-abierto-contenedor" class="col-8">
+                <div id="chat-abierto">
+                    <!-- Encabezado del chat -->
+                    <div id="encabezado">
+                        <div class="imagen-contenedor">
+                            <img src="{% static 'images/default_user.png' %}" alt="">
+                        </div>
+                        <p class="nombre-comprador"><span class="bold">Luis Sebastian</span></p>
+                    </div>
+                    <!-- Contenedor de mensajes -->
+                    <div id="mensajes-contenedor">
+                        <!-- Aqui van los mensajes -->
+                         <p>Mensaje</p>
+                    </div>
+                    <!-- Barra de escritura -->
+                    <div id="barra-mensajes">
+                        <i class="fa-solid fa-arrow-right-arrow-left" data-bs-toggle="tooltip" title="Hacer oferta"></i>
+                        <form>
+                            <input name="mensaje" type="text" placeholder="Aa">
+                        </form>
+                    </div>
                 </div>
-                <div class="informacion-chat">
-                    <p class="nombre-comprador"><span class="bold">Luis Sebastian</span></p>
-                    <p class="ultimo-mensaje">Que te parece si nos...</p>
-                </div>
-                <p class="hora-ultimo-mensaje">12:30</p>
             </div>
-            <div class="chat">
-                <div class="imagen-contenedor">
-                    <img src="{% static 'images/default_user.png' %}" alt="imagen del comprador">
-                </div>
-                <div class="informacion-chat">
-                    <p class="nombre-comprador"><span class="bold">Luis Sebastian</span></p>
-                    <p class="ultimo-mensaje">Que te parece si nos...</p>
-                </div>
-                <p class="hora-ultimo-mensaje">12:30</p>
-            </div>
-            <div class="chat">
-                <div class="imagen-contenedor">
-                    <img src="{% static 'images/default_user.png' %}" alt="imagen del comprador">
-                </div>
-                <div class="informacion-chat">
-                    <p class="nombre-comprador"><span class="bold">Luis Sebastian</span></p>
-                    <p class="ultimo-mensaje">Que te parece si nos...</p>
-                </div>
-                <p class="hora-ultimo-mensaje">12:30</p>
-            </div>
-            <div class="chat">
-                <div class="imagen-contenedor">
-                    <img src="{% static 'images/default_user.png' %}" alt="imagen del comprador">
-                </div>
-                <div class="informacion-chat">
-                    <p class="nombre-comprador"><span class="bold">Luis Sebastian</span></p>
-                    <p class="ultimo-mensaje">Que te parece si nos...</p>
-                </div>
-                <p class="hora-ultimo-mensaje">12:30</p>
-            </div>
-            <div class="chat">
-                <div class="imagen-contenedor">
-                    <img src="{% static 'images/default_user.png' %}" alt="imagen del comprador">
-                </div>
-                <div class="informacion-chat">
-                    <p class="nombre-comprador"><span class="bold">Luis Sebastian</span></p>
-                    <p class="ultimo-mensaje">Que te parece si nos...</p>
-                </div>
-                <p class="hora-ultimo-mensaje">12:30</p>
-            </div>
-            <div class="chat">
-                <div class="imagen-contenedor">
-                    <img src="{% static 'images/default_user.png' %}" alt="imagen del comprador">
-                </div>
-                <div class="informacion-chat">
-                    <p class="nombre-comprador"><span class="bold">Luis Sebastian</span></p>
-                    <p class="ultimo-mensaje">Que te parece si nos...</p>
-                </div>
-                <p class="hora-ultimo-mensaje">12:30</p>
-            </div>
-            <div class="chat">
-                <div class="imagen-contenedor">
-                    <img src="{% static 'images/default_user.png' %}" alt="imagen del comprador">
-                </div>
-                <div class="informacion-chat">
-                    <p class="nombre-comprador"><span class="bold">Luis Sebastian</span></p>
-                    <p class="ultimo-mensaje">Que te parece si nos...</p>
-                </div>
-                <p class="hora-ultimo-mensaje">12:30</p>
-            </div>
-            <div class="chat">
-                <div class="imagen-contenedor">
-                    <img src="{% static 'images/default_user.png' %}" alt="imagen del comprador">
-                </div>
-                <div class="informacion-chat">
-                    <p class="nombre-comprador"><span class="bold">Luis Sebastian</span></p>
-                    <p class="ultimo-mensaje">Que te parece si nos...</p>
-                </div>
-                <p class="hora-ultimo-mensaje">12:30</p>
-            </div>
-            <div class="chat">
-                <div class="imagen-contenedor">
-                    <img src="{% static 'images/default_user.png' %}" alt="imagen del comprador">
-                </div>
-                <div class="informacion-chat">
-                    <p class="nombre-comprador"><span class="bold">Luis Sebastian</span></p>
-                    <p class="ultimo-mensaje">Que te parece si nos...</p>
-                </div>
-                <p class="hora-ultimo-mensaje">12:30</p>
-            </div>
-            <div class="chat">
-                <div class="imagen-contenedor">
-                    <img src="{% static 'images/default_user.png' %}" alt="imagen del comprador">
-                </div>
-                <div class="informacion-chat">
-                    <p class="nombre-comprador"><span class="bold">Luis Sebastian</span></p>
-                    <p class="ultimo-mensaje">Que te parece si nos...</p>
-                </div>
-                <p class="hora-ultimo-mensaje">12:30</p>
-            </div>
-            <div class="chat">
-                <div class="imagen-contenedor">
-                    <img src="{% static 'images/default_user.png' %}" alt="imagen del comprador">
-                </div>
-                <div class="informacion-chat">
-                    <p class="nombre-comprador"><span class="bold">Luis Sebastian</span></p>
-                    <p class="ultimo-mensaje">Que te parece si nos...</p>
-                </div>
-                <p class="hora-ultimo-mensaje">12:30</p>
-            </div>
-            <div class="chat">
-                <div class="imagen-contenedor">
-                    <img src="{% static 'images/default_user.png' %}" alt="imagen del comprador">
-                </div>
-                <div class="informacion-chat">
-                    <p class="nombre-comprador"><span class="bold">Luis Sebastian</span></p>
-                    <p class="ultimo-mensaje">Que te parece si nos...</p>
-                </div>
-                <p class="hora-ultimo-mensaje">12:30</p>
-            </div>
-            <div class="chat">
-                <div class="imagen-contenedor">
-                    <img src="{% static 'images/default_user.png' %}" alt="imagen del comprador">
-                </div>
-                <div class="informacion-chat">
-                    <p class="nombre-comprador"><span class="bold">Luis Sebastian</span></p>
-                    <p class="ultimo-mensaje">Que te parece si nos...</p>
-                </div>
-                <p class="hora-ultimo-mensaje">12:30</p>
-            </div>
-            <div class="chat">
-                <div class="imagen-contenedor">
-                    <img src="{% static 'images/default_user.png' %}" alt="imagen del comprador">
-                </div>
-                <div class="informacion-chat">
-                    <p class="nombre-comprador"><span class="bold">Luis Sebastian</span></p>
-                    <p class="ultimo-mensaje">Que te parece si nos...</p>
-                </div>
-                <p class="hora-ultimo-mensaje">12:30</p>
-            </div>
-        </div>
         </div>
     </div>
     <!-- Javascript -->
