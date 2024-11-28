@@ -42,7 +42,30 @@
                 <!-- Contenedor de mensajes -->
                 <div id="mensajes-contenedor">
                     <!-- Aqui van los mensajes -->
-                        <p>Mensaje</p>
+                    <div class="mensaje el-otro">
+                        <div class="imagen-contenedor">
+                            <img src="{% static 'images/default_user.png' %}" alt="">
+                        </div>
+                        <p class="contenido">Lorem, ipsum dolor.</p>
+                    </div>
+                    <div class="mensaje ultimo-mensaje el-otro">
+                        <div class="imagen-contenedor">
+                            <img src="{% static 'images/default_user.png' %}" alt="">
+                        </div>
+                        <p class="contenido">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vel illum obcaecati sint ab, optio cupiditate quae delectus deleniti praesentium sapiente atque illo rem ratione nostrum vero eos officiis debitis qui ut ex dolore dolor. Dolorem culpa saepe, dolor expedita sint dolore nostrum consectetur voluptas error quisquam minus vel omnis voluptatibus.</p>
+                    </div>
+                    <div class="mensaje yo">                        
+                        <p class="contenido">Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe itaque cumque, assumenda laborum nam autem porro ea quo reiciendis asperiores.</p>
+                        <div class="imagen-contenedor">
+                            <img src="{% static 'images/default_user.png' %}" alt="">
+                        </div>
+                    </div>
+                    <div class="mensaje ultimo-mensaje yo">
+                        <p class="contenido">Lorem ipsum dolor sit amet.</p>
+                        <div class="imagen-contenedor">
+                            <img src="{% static 'images/default_user.png' %}" alt="">
+                        </div>
+                    </div>
                 </div>
                 <!-- Barra de escritura -->
                 <div id="barra-mensajes">

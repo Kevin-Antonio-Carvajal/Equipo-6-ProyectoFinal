@@ -95,12 +95,6 @@ html, body {
     height: 100%;
 }
 
-#mensajes-contenedor {
-    background-color: #ffc510;
-    flex: 1;
-    overflow-y: auto;
-}
-
 #encabezado {
     display: flex;
     align-items: center;
@@ -125,7 +119,48 @@ html, body {
 
 /* Contenedor de mensajes */
 #mensajes-contenedor {
+    flex: 1;
+    overflow-y: auto;
+}
 
+.mensaje {
+    display: flex;
+    align-items: flex-end;
+    padding: 8px;
+    height: fit-content;
+}
+
+.mensaje p.contenido {
+    margin: 0;
+    padding: 8px 12px;    
+    font-size: small;    
+    max-width: 70%;
+    word-wrap: break-word;
+    background-color: #F2F2F2;
+}
+
+.mensaje div.imagen-contenedor img {
+    width: 24px;
+    visibility: hidden;
+    border-radius: 50%;
+}
+
+.ultimo-mensaje div.imagen-contenedor img{
+    visibility: visible;
+}
+
+.el-otro p.contenido {
+    margin-left: 8px;
+    border-radius: 12px 12px 12px 0;
+}
+
+.yo {
+    justify-content: flex-end;
+}
+
+.yo p.contenido {
+    margin-right: 8px;
+    border-radius: 12px 12px 0px 12px;
 }
 
 /* Barra de escritura */
