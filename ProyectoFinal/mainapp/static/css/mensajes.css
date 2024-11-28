@@ -2,7 +2,7 @@
 
 html, body {
     margin: 0;
-    height: 0;
+    padding: 0;
     height: 100%;
     box-sizing: border-box;
 }
@@ -20,6 +20,7 @@ html, body {
     flex-direction: column;
     box-sizing: border-box;
     min-height: 0;
+    overflow: hidden;
 }
 
 /* Elementos del template */
@@ -29,6 +30,8 @@ html, body {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    overflow: hidden;
+    background-color: #FFFFFF;
 }
 
 #paneles-contenedor {
@@ -36,11 +39,14 @@ html, body {
     display: flex;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;    
 }
 
 #chats-contenedor {
+    height: 100%;
     padding: 6px;
-    background-color: red;
+    overflow-y: auto;
 }
 
 .chat {
@@ -52,7 +58,7 @@ html, body {
 }
 
 .chat:hover {
-    background-color: #EEEEEE;
+    background-color: #F2F2F2;
 }
 
 .chat p {
@@ -73,11 +79,6 @@ html, body {
 .chat div.informacion-chat {
     width: 100%;
     padding-left: 12px;    
-}
-
-#chat-abierto {
-    margin: 0;
-    padding: 0;
 }
 
 .bold {
