@@ -2,13 +2,13 @@
 from django.db.models import Q
 from django.contrib import messages
 from django.http import JsonResponse
-from .models import Usuario, Rol, Comic
+from .models import *
 from .forms import FormRegistro, FormLogin
 from django.shortcuts import render, redirect
 from mainapp.context_processors import get_usuario
 from mainapp.CryptoUtils import cipher, sha256, validate
 from django.shortcuts import get_object_or_404
-from .models import ListaDeseos
+from django.http import HttpResponseRedirect
 
 def index(request):
 
@@ -249,20 +249,26 @@ def agregar_a_lista_deseos(request, comic_id):
 
         # Obtener el cómic
         comic = get_object_or_404(Comic, id_comic=comic_id)
-        
-        # Obtener al usuario logueado
-        usuario = Usuario.objects.get(id_usuario=usuario['id'])
-        
+
         # Verificar si ya está en la lista de deseos
-        if ListaDeseos.objects.filter(usuario=usuario, comic=comic).exists():
+        comprador = Usuario.objects.get(id_usuario=usuario['id'])
+        if ListaDeseos.objects.filter(usuario=comprador, comic=comic).exists():
             messages.warning(request, "El cómic ya está en tu lista de deseos.")
         else:
             # Agregar el cómic a la lista de deseos
-            ListaDeseos.objects.create(usuario=usuario, comic=comic)
+            ListaDeseos.objects.create(usuario=comprador, comic=comic)
             messages.success(request, "El cómic se agregó a tu lista de deseos.")
+
+        # Obtener la URL de referencia
+        referer_url = request.META.get('HTTP_REFERER', None)
         
-        return redirect('ver_lista_deseos')
-    return JsonResponse({'error': 'Método no permitido'}, status=405)
+        # Redirigir a la página de referencia o a una página por defecto
+        if referer_url:
+            return HttpResponseRedirect(referer_url)
+        return redirect('index')  # Redirige al inicio si no hay una URL de referencia
+
+    messages.error(request, 'Método no permitido.')
+    return redirect('index')
 
 def eliminar_de_lista_deseos(request, comic_id):
     # Obtenemos el usuario que inicio sesion
@@ -287,3 +293,46 @@ def eliminar_de_lista_deseos(request, comic_id):
         print(f"Error al eliminar el cómic: {e}")
         # messages.error(request, 'Error al eliminar el comic')
         return JsonResponse({'success': False, 'error': 'Error al eliminar el comic.'}, status=500)
+    
+def hacer_oferta(request, comic_id):
+    if request.method == "POST":
+        # Obtenemos el usuario que inició sesión
+        usuario_contexto = get_usuario(request)
+        usuario = usuario_contexto.get('usuario')
+        if usuario is None:
+            return JsonResponse({'success': False, 'error': 'Debes iniciar sesión para hacer una oferta'}, status=403)
+
+        # Obtener el cómic al que se quiere hacer una oferta
+        comic = get_object_or_404(Comic, id_comic=comic_id)
+
+        # Obtener los datos del formulario
+        objeto = request.POST.get('objeto')
+        descripcion = request.POST.get('descripcion')
+        imagen = request.FILES.get('imagen')
+
+        # Crear la oferta
+        Oferta.objects.create(
+            comic=comic,
+            emisor=Usuario.objects.get(id_usuario=usuario['id']),
+            receptor=comic.vendedor,
+            objeto=objeto,
+            descripcion=descripcion,
+            imagen=imagen
+        )
+
+        # Agregar el cómic a la lista de deseos si no está ya incluido
+        comprador = Usuario.objects.get(id_usuario=usuario['id'])
+        if not ListaDeseos.objects.filter(usuario=comprador, comic=comic).exists():
+            ListaDeseos.objects.create(usuario=comprador, comic=comic)
+
+        # Obtener la URL de referencia
+        referer_url = request.META.get('HTTP_REFERER', None)
+        messages.success(request, 'Oferta realizada exitosamente y el cómic se ha añadido a tu lista de deseos.')
+        
+        # Redirigir a la página de referencia o a una página por defecto
+        if referer_url:
+            return HttpResponseRedirect(referer_url)
+        return redirect('index')  # Redirige al inicio si no hay una URL de referencia
+
+    messages.error(request, 'Método no permitido.')
+    return redirect('index')
