@@ -1,0 +1,140 @@
+#comics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 1280px;
+    margin-bottom: 24px;
+    padding: 0 16px;
+}
+
+/* Estilo de las tarjetas de cómics */
+.comic {
+    position: relative;
+    margin: 0;
+    width: 240px;
+    height: 420px;
+    border-radius: 16px;
+    background-color: #ffffff; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.comic:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón de favorito */
+.favorito-form {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+}
+
+.favorito-btn {
+    background-color: rgba(255, 255, 255, 0.973); 
+    border: none;
+    font-size: 1.5rem;
+    color: #ff4757;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.favorito-btn:hover {
+    background-color: #ff6b81; 
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+/* Imagen del cómic */
+.comic .imagen-container {
+    width: 180px;
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    background-color: #ffffff; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.comic .imagen-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.comic p.nombre {
+    text-align: center;
+    font-size: .9rem;
+    color: #333;
+    font-weight: bold;
+    margin: 0;
+    line-height: 1.5; 
+    height: auto; 
+    overflow: visible;
+    white-space: normal; 
+}
+
+.comic p.nombre a {
+    text-decoration: none;
+    color: #252525;
+}
+
+.comic p.nombre a:hover {
+    color: #4c94f6;
+    cursor: pointer;
+}
+
+/* Botón de "Hacer oferta" */
+.comic .oferta-form {
+    margin-top: auto;
+    width: 100%;
+}
+
+.comic .oferta-form button {
+    width: 100%;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(145deg, #ffd700, #ffc400);
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.comic .oferta-form button:hover {
+    background: linear-gradient(145deg, #ffc400, #ffb300);
+    transform: translateY(-2px);
+}
+
+/* Responsividad: dos columnas en pantallas medianas */
+@media (max-width: 1024px) {
+    #comics {
+        grid-template-columns: repeat(2, 1fr); 
+    }
+}
+
+/* Responsividad: una columna en pantallas pequeñas */
+@media (max-width: 768px) {
+    #comics {
+        grid-template-columns: 1fr;
+    }
+}
