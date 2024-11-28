@@ -287,3 +287,9 @@ def eliminar_de_lista_deseos(request, comic_id):
         print(f"Error al eliminar el cómic: {e}")
         # messages.error(request, 'Error al eliminar el comic')
         return JsonResponse({'success': False, 'error': 'Error al eliminar el comic.'}, status=500)
+    
+def mensajes(request):
+    contexto = {
+        'titulo': 'Chats'
+    }
+    return render(request, 'mainapp/mensajes.html', contexto)

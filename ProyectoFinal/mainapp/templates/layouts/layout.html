@@ -23,6 +23,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/layout.css' %}">
 </head>
 <body>
+    <!-- Contenedor general -->
+    <main id="contenedor-general">
     <nav id="navegacion" class="navbar navbar-expand-lg navbar-light bg-light"> 
         <!-- Logo -->
         <a class="navbar-brand" href="{% url 'inicio' %}">
@@ -61,6 +63,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'ver_lista_deseos' %}">Lista de Deseos</a>
                     </li>
+                    <!-- Icono de mensajes -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mensajes' %}"><i class="fa-solid fa-message"></i></a>
+                    </li>
                 {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>
@@ -76,7 +82,6 @@
             </ul>
         </div>
     </nav>
-    
     <!-- Bloque para mostrar mensajes -->
     {% if messages %}
     <div class="container mt-3">
@@ -88,19 +93,16 @@
         {% endfor %}
     </div>
     {% endif %}
-
-    <!-- Contenedor general -->
-    <main id="contenedor-general">
-        <!-- Contenedor del contenido principal -->
-        <div id="content-wrapper">
-            {% block content %}
-                <!-- Contenido principal -->
-            {% endblock %}
-        </div>
-    </main>
+    <!-- Contenedor del contenido principal -->
+    <div id="content-wrapper">
+        {% block content %}
+            <!-- Contenido principal -->
+        {% endblock %}
+    </div>    
     <!-- Pie de pagina -->
      <footer id="footer">
         <p>&copy; 2024 Diseño de interfaces Equipo6 | Todos los derechos reservados.</p>
      </footer>
+    </main>
 </body>
 </html>

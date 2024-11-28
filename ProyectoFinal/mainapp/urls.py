@@ -59,5 +59,10 @@ urlpatterns = [
 
     path('lista_deseos/eliminar/<int:comic_id>/', 
          views.eliminar_de_lista_deseos, 
-         name='eliminar_deseo')
+         name='eliminar_deseo'),
+    path(
+        'mensajes/',
+        views.mensajes,
+        name='mensajes'
+    )
 ]
