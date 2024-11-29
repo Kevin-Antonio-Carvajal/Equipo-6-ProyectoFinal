@@ -71,8 +71,8 @@ class Mensaje(models.Model):
     emisor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="mensajes_enviados")
     receptor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="mensajes_recibidos")
     fecha_emision = models.DateTimeField(auto_now_add=True)
+    contenido = models.TextField(null=False, default='', blank=False) 
     visto = models.BooleanField(default=False)
-
     def __str__(self):
         return f"Mensaje de {self.emisor} a {self.receptor}"
 

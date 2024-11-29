@@ -34,6 +34,14 @@ html, body {
     background-color: #FFFFFF;
 }
 
+#titulo {
+    padding: 24px;    
+}
+
+#titulo p {
+    color: #252525;
+}
+
 #paneles-contenedor {
     flex: 1;
     display: flex;
@@ -55,9 +63,10 @@ html, body {
     border-radius: 8px;
     justify-content: center;
     align-items: center;    
+    cursor: pointer;
 }
 
-.chat:hover {
+.chat:hover {    
     background-color: #F2F2F2;
 }
 
@@ -81,6 +90,12 @@ html, body {
     padding-left: 12px;    
 }
 
+.chat p.hora-ultimo-mensaje {
+    display: flex;
+    justify-content: flex-end;
+    width: 60px;
+}
+
 .bold {
     font-weight: bold;
 }
@@ -93,7 +108,29 @@ html, body {
     display: flex;
     flex-direction: column;
     height: 100%;
+    box-shadow: rgba(14, 63, 126, 0.06) 0px 0px 0px 1px, rgba(42, 51, 70, 0.03) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 2px 2px -1px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.03) 0px 5px 5px -2.5px, rgba(42, 51, 70, 0.03) 0px 10px 10px -5px, rgba(42, 51, 70, 0.03) 0px 24px 24px -8px;
 }
+
+/* Default chat abierto */
+#default-chat-abierto {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    justify-content: center;
+    align-items: center;
+    background-color: #FAFAFAFA;
+}
+
+#default-chat-abierto img {
+    width: 200px;
+}
+
+#default-chat-abierto h2 {
+    color: #C2C2C2;
+}
+
+/* Encabezado */
 
 #encabezado {
     display: flex;
@@ -149,41 +186,65 @@ html, body {
     visibility: visible;
 }
 
-.el-otro p.contenido {
+.usuario-chat p.contenido {
     margin-left: 8px;
     border-radius: 12px 12px 12px 0;
 }
 
-.yo {
+.usuario-actual {
     justify-content: flex-end;
 }
 
-.yo p.contenido {
+.usuario-actual p.contenido {
     margin-right: 8px;
     border-radius: 12px 12px 0px 12px;
 }
 
-/* Barra de escritura */
-#barra-mensajes {
+/* Barra para mensajear */
+#barra-mensajear {
     display: flex;
     align-items: center;
     padding: 8px 16px;
 }
 
-#barra-mensajes i {
+#barra-mensajear i {
     color: 	#ffc510;
     font-size: 20px;
+    cursor: pointer;
 }
 
-#barra-mensajes form {
+#barra-mensajear form {
     width: 100%;
     padding: 0px 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-#barra-mensajes form input{
+#barra-mensajear form input{
+    font-size: small;
     width: 100%;
     padding: 8px;
-    border-radius: 20px;
-    border: none;
+    border-radius: 30px;
+    border: none;    
     background-color: #F2F2F2;
+    resize: none;
+    overflow-y: hidden;
+    height: 30px;
+    max-height: 120px;
+    box-sizing: border-box;
+    outline: none; /* Elimina el borde del focus */    
+}
+
+
+#barra-mensajear button {
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    display: none;
+}
+
+#barra-mensajear button.disabled i {
+    color: #F2F2F2;
 }

@@ -36,10 +36,7 @@ class OfertaAdmin(admin.ModelAdmin):
 # Configuracion para mostrar los modelos en el panel de administracion
 class MensajeAdmin(admin.ModelAdmin):
     readonly_fields = (
-        'id_mensaje',
-        'emisor',
-        'receptor',
-        'fecha_emision'        
+        'id_mensaje',   
     )
 
 # Agregamos al panel de administracion

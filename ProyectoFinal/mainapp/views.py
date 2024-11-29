@@ -1,14 +1,14 @@
 
-from django.db.models import Q
+from django.db.models import Q, Max
 from django.contrib import messages
 from django.http import JsonResponse
-from .models import Usuario, Rol, Comic
 from .forms import FormRegistro, FormLogin
 from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404
 from mainapp.context_processors import get_usuario
 from mainapp.CryptoUtils import cipher, sha256, validate
-from django.shortcuts import get_object_or_404
-from .models import ListaDeseos
+from .models import Usuario, Rol, Comic, Mensaje, ListaDeseos
+
 
 def index(request):
 
@@ -289,7 +289,168 @@ def eliminar_de_lista_deseos(request, comic_id):
         return JsonResponse({'success': False, 'error': 'Error al eliminar el comic.'}, status=500)
     
 def mensajes(request):
+    # Obtenemos el usuario que inició sesión
+    usuario_contexto = get_usuario(request)
+    usuario = usuario_contexto.get('usuario')
+    
+    # Verificamos que se haya iniciado sesión
+    if usuario is None:
+        messages.error(request, 'Debes iniciar sesión para poder ver tus mensajes')
+        return redirect('login')
+    
+    # Obtenemos el ID del usuario actual
+    usuario_id = usuario.get('id')
+    
+    # Obtener los últimos mensajes por chat con cada usuario
+    mensajes_usuario = Mensaje.objects.filter(
+        Q(emisor_id=usuario_id) | Q(receptor_id=usuario_id)
+    ).annotate(ultima_fecha=Max('fecha_emision')).values(
+        'emisor_id', 'receptor_id', 'ultima_fecha'
+    )
+
+    # Usamos un diccionario para evitar repetidos
+    chats_unicos = {}
+
+    for mensaje in mensajes_usuario:
+        # Determinamos el otro usuario en la conversación
+        otro_usuario_id = mensaje['emisor_id'] if mensaje['emisor_id'] != usuario_id else mensaje['receptor_id']
+        
+        # Evitar duplicados en el diccionario
+        if otro_usuario_id not in chats_unicos:
+            # Obtener el último mensaje entre ambos usuarios
+            ultimo_mensaje = Mensaje.objects.filter(
+                Q(emisor_id=usuario_id, receptor_id=otro_usuario_id) | 
+                Q(receptor_id=usuario_id, emisor_id=otro_usuario_id),
+                fecha_emision=mensaje['ultima_fecha']
+            ).first()
+            
+            # Obtener los datos del otro usuario
+            otro_usuario = Usuario.objects.filter(id_usuario=otro_usuario_id).values(
+                'id_usuario', 'username', 'nombre', 'correo'
+            ).first()
+
+            # Agregar datos al diccionario de chats únicos
+            if otro_usuario and ultimo_mensaje:
+                chats_unicos[otro_usuario_id] = {
+                    'usuario': otro_usuario,
+                    'ultimo_mensaje': ultimo_mensaje
+                }
+
+    # Convertir los valores del diccionario en una lista para el contexto
+    chats = list(chats_unicos.values())
+
+    # Contexto para la plantilla
     contexto = {
-        'titulo': 'Chats'
+        'titulo': 'Chats',
+        'chats': chats
     }
+    
     return render(request, 'mainapp/mensajes.html', contexto)
+
+def get_mensajes(request, id_usuario):
+    # Obtenemos el usuario que inició sesión
+    usuario_contexto = get_usuario(request)
+    usuario = usuario_contexto.get('usuario')
+    # Verificamos que haya iniciado sesión
+    if usuario is None:
+        return JsonResponse(
+            {'success': False, 'error': 'Debes iniciar sesión para obtener los mensajes con un usuario'}, 
+            status=403
+        )
+    # Verificamos que el id_usuario sea válido
+    if not id_usuario:
+        return JsonResponse(
+            {'success': False, 'error': 'El ID del usuario destinatario no es válido'}, 
+            status=400
+        )
+    # Serializamos la información del usuario que inició sesión
+    usuario_actual_serializado = {
+        'id': usuario.get('id'),
+        'nombre': usuario.get('nombre'),
+        'correo': usuario.get('correo'),
+        'username': usuario.get('username')
+    }
+    # Obtenemos los datos del usuario relacionado
+    try:
+        usuario_chat = Usuario.objects.get(id_usuario=id_usuario)
+        usuario_chat_serializado = {
+            'id': usuario_chat.id_usuario,
+            'nombre': usuario_chat.nombre,
+            'correo': usuario_chat.correo,
+            'username': usuario_chat.username
+        }
+    except Usuario.DoesNotExist:
+        return JsonResponse(
+            {'success': False, 'error': 'El usuario destinatario no existe'}, 
+            status=404
+        )
+    # Obtenemos los mensajes entre el usuario actual y el usuario con id_usuario
+    usuario_actual_id = usuario.get('id')  # ID del usuario actual de la sesión
+    mensajes = Mensaje.objects.filter(
+        Q(emisor_id=usuario_actual_id, receptor_id=id_usuario) | 
+        Q(emisor_id=id_usuario, receptor_id=usuario_actual_id)
+    ).order_by('fecha_emision')
+    # Serializamos los mensajes
+    mensajes_serializados = [
+        {
+            'id': mensaje.id_mensaje,
+            'contenido': mensaje.contenido,
+            'emisor_id': mensaje.emisor_id,
+            'receptor_id': mensaje.receptor_id,
+            'fecha_emision': mensaje.fecha_emision.strftime('%Y-%m-%d %H:%M:%S'),
+            'visto': mensaje.visto
+        }
+        for mensaje in mensajes
+    ]
+    return JsonResponse(
+        {
+            'success': True,
+            'message': 'Mensajes recuperados',
+            'usuario_actual': usuario_actual_serializado,
+            'usuario_chat': usuario_chat_serializado,
+            'mensajes': mensajes_serializados
+        },
+        status=200
+    )
+
+def mandar_mensaje(request):
+    if request.method == 'POST':
+        # Obtenemos el usuario que inicio sesion
+        usuario_contexto = get_usuario(request)
+        usuario = usuario_contexto.get('usuario')
+        # Verificamos que se haya iniciado sesion
+        if usuario is None:
+            error = 'Debes iniciar sesion para mandar un mensaje'
+            return JsonResponse({'success': False, 'error': error}, status=403)
+        # Obtenemos los datos del formulario
+        id_emisor = request.POST.get('idUsuarioEmisor')
+        id_receptor = request.POST.get('idUsuarioReceptor')
+        contenido = request.POST.get('mensaje') # Contenido del mensaje
+        # Validaciones
+        if not id_emisor or not id_receptor or not contenido:
+            error = 'Faltan datos obligatorios para registrar el mensaje'
+            return JsonResponse({'success': False, 'error': error}, status=400)
+        # Verificamos que el id del emisor sea el mismo que el inicio sesion
+        if (usuario['id'] != int(id_emisor)):
+            error = 'El ID del usuario que inició sesión es distinto al ID del emisor'
+            return JsonResponse({'success': False, 'error': error}, status=403)
+        # Registramos el mensaje
+        try:
+            # Verificamos que el receptor exista
+            receptor = Usuario.objects.get(id_usuario=id_receptor)
+            # Registramos el mensaje
+            Mensaje.objects.create(
+                emisor_id=id_emisor,
+                receptor=receptor,
+                contenido=contenido
+            )
+            # Respuesta exitosa
+            success = 'Mensaje enviado exitosamente'
+            return JsonResponse({'success': True, 'message': success}, status=200)
+        except Usuario.DoesNotExist:
+            error = 'El usuario receptor no existe'
+            return JsonResponse({'success': False, 'error': error}, status=404)
+        except Exception as e:
+            error = f'Error al registrar el mensaje: {str(e)}'
+            return JsonResponse({'success': False, 'error': error}, status=500)
+    return JsonResponse({'success': False, 'error': 'Metodo invalido'}, status=400)
