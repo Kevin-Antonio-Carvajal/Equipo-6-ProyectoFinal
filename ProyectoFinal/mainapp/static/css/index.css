@@ -106,64 +106,11 @@ body {
     padding: 120px;
 }
 
-#comics-seccion h2 {
+.comics-h2 {
     font-family: "Bangers", system-ui;
     letter-spacing: 2px;
     color: #ffc510;
     -webkit-text-stroke: 1px #252525; /* Contorno negro de 2px */
     text-stroke: 2px #252525; /* Estándar (para compatibilidad futura) */
     margin-bottom: 48px;
-}
-
-#comics {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3rem;
-    max-width: 1280px;
-}
-
-.comic {
-    margin: 0px;
-    width: 240px;
-    height: 380px;
-    border-radius: 8px;
-    background-color: #FFF;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    padding: 8px; 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.comic p.nombre a {
-    margin: 24px 0px 0px 0px;
-    font-size: small;
-    height: 64px;
-    text-decoration: none;
-    color: #252525;
-}
-
-.comic p.nombre a:hover {
-    color: #4c94f6;
-    cursor: pointer;
-}
-
-.comic .imagen-container img {
-    width: 224px;
-    height: 224px;
-    object-fit: contain;
-    border-radius: 8px;
-}
-
-.comic form button {
-    width: 100%;
-    height: 48px;
-    border-radius: 6px;
-    background-color: #ffc510;
-    border: none;
-    color: #FFFF;
-}
-
-.comic form button:hover {
-    background-color: #f6db35;
 }

@@ -57,22 +57,13 @@ urlpatterns = [
         name='agregar_a_lista_deseos'
     ),
 
-    path('lista_deseos/eliminar/<int:comic_id>/', 
+    path(
+        'lista_deseos/eliminar/<int:comic_id>/', 
          views.eliminar_de_lista_deseos, 
-         name='eliminar_deseo'),
-    path(
-        'mensajes/',
-        views.mensajes,
-        name='mensajes'
+         name='eliminar_deseo'
     ),
-    path(
-        'get_mensajes/<int:id_usuario>/',
-        views.get_mensajes,
-        name='get_mensajes'
+    path('hacer_oferta/<int:comic_id>/', 
+         views.hacer_oferta, 
+         name='hacer_oferta'
     ),
-    path(
-        'mandar_mensaje/',
-        views.mandar_mensaje,
-        name='mandar_mensaje'
-    )
 ]

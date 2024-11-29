@@ -1,0 +1,27 @@
+{% load static %}
+
+<!-- Incluir CSS para el modal -->
+<link rel="stylesheet" href="{% static 'css/modal_oferta.css' %}">
+
+<!-- Ventana Modal -->
+<div id="modal-oferta" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Hacer una oferta</h2>
+        <form method="POST" id="modal-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" id="comic-id" name="comic_id">
+            
+            <label for="objeto">Objeto o Servicio:</label>
+            <input type="text" id="objeto" name="objeto" required>
+            
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
+            
+            <label for="imagen">Imagen del objeto o servicio:</label>
+            <input type="file" id="imagen" name="imagen" accept="image/*">
+            
+            <button type="submit" class="btn-enviar-oferta">Enviar Oferta</button>
+        </form>        
+    </div>
+</div>
