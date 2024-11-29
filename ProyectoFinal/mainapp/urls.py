@@ -57,7 +57,13 @@ urlpatterns = [
         name='agregar_a_lista_deseos'
     ),
 
-    path('lista_deseos/eliminar/<int:comic_id>/', 
+    path(
+        'lista_deseos/eliminar/<int:comic_id>/', 
          views.eliminar_de_lista_deseos, 
-         name='eliminar_deseo')
+         name='eliminar_deseo'
+    ),
+    path('hacer_oferta/<int:comic_id>/', 
+         views.hacer_oferta, 
+         name='hacer_oferta'
+    ),
 ]

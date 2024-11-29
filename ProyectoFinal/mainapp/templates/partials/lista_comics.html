@@ -1,0 +1,44 @@
+{% load static %}
+
+<!-- Incluir CSS para el modal -->
+<link rel="stylesheet" href="{% static 'css/lista_comics.css' %}">
+
+<!-- Lista de cómics -->
+<div id="comics">
+    {% for comic in comics %}
+        <div class="comic" data-comic-id="{{ comic.id_comic }}">
+            <!-- Botón de favorito como ícono de corazón -->
+            {% if usuario.rol == 2 %}
+                <form method="POST" action="{% url 'agregar_a_lista_deseos' comic.id_comic %}" class="favorito-form">
+                    {% csrf_token %}
+                    <button type="submit" class="favorito-btn">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </form>
+            {% endif %}
+            <div class="imagen-container">
+                <!-- Añadimos el enlace a la página de detalle -->
+                <a href="{% url 'detalle_comic' comic.id_comic %}">
+                    <img src="{{ comic.imagen.url }}" alt="imagen del comic">
+                </a>
+            </div>
+            <!-- Añadimos el enlace también al título -->
+            <p class="nombre">
+                <a href="{% url 'detalle_comic' comic.id_comic %}">{{ comic.nombre|slice:":57" }}{% if comic.nombre|length > 57 %}...{% endif %}</a>
+            </p>
+            <!-- Solo los usuarios con rol de comprador pueden interactuar -->
+            {% if usuario.rol == 2 %}
+                <!-- Botón para hacer oferta -->
+                <form method="POST" action="{% url 'hacer_oferta' comic.id_comic %}" class="oferta-form">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Hacer oferta</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Incluir la ventana modal -->
+{% include 'partials/modal_oferta.html' %}
+
+<script src="{% static 'js/modal_oferta.js' %}"></script>

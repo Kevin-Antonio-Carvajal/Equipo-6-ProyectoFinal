@@ -1,3 +1,4 @@
+/* Contenedor principal */
 #main-container {
     display: flex;
     flex-direction: column;
@@ -6,103 +7,6 @@
 
 .titulo {
     color: #252525;
+    font-size: 2rem;
     margin: 24px;
 }
-
-#comics {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    max-width: 1280px;
-    margin-bottom: 24px;
-}
-
-.comic {
-    margin: 0px;
-    width: 240px;
-    height: 380px;
-    border-radius: 8px;
-    background-color: #FFF;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    padding: 8px; 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.comic p.nombre {
-    margin: 24px 0px 0px 0px;
-    font-size: small;
-    height: 64px;    
-}
-
-.comic p.nombre a {
-    text-decoration: none;
-    color: #252525;
-}
-
-.comic p.nombre a:hover {
-    color: #4c94f6;
-    cursor: pointer;
-}
-
-.comic .imagen-container img {
-    width: 224px;
-    height: 224px;
-    object-fit: contain;
-    border-radius: 8px;
-}
-
-.comic form button {
-    width: 100%;
-    height: 48px;
-    border-radius: 6px;
-    background-color: #ffc510;
-    border: none;
-    color: #FFFF;
-}
-
-.comic form button:hover {
-    background-color: #f6db35;
-}
-
-/* #comics {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
-    margin: 0px;
-    max-width: 1280px;
-}
-
-.comic {
-    margin: 0px;
-    width: 240px;
-    height: 380px;
-    border-radius: 8px;
-    background-color: #FFF;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    padding: 8px;    
-}
-
-.comic p {
-    margin-top: 4px;
-    font-size: medium;
-}
-
-.comic .imagen-container img {
-    width: 100%;
-    border-radius: 8px;
-}
-
-.comic button {
-    width: 100%;
-    height: 48px;
-    border-radius: 6px;
-    background-color: #ffc510;
-    border: none;
-    color: #FFFF;
-}
-
-.comic button:hover {
-    background-color: #f6db35;
-} */
