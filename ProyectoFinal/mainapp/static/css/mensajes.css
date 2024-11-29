@@ -1,0 +1,250 @@
+/* Elementos del layout */
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#contenedor-general {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+#content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* Elementos del template */
+
+#main-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
+    background-color: #FFFFFF;
+}
+
+#titulo {
+    padding: 24px;    
+}
+
+#titulo p {
+    color: #252525;
+}
+
+#paneles-contenedor {
+    flex: 1;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;    
+}
+
+#chats-contenedor {
+    height: 100%;
+    padding: 6px;
+    overflow-y: auto;
+}
+
+.chat {
+    display: flex;
+    padding: 8px;
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;    
+    cursor: pointer;
+}
+
+.chat:hover {    
+    background-color: #F2F2F2;
+}
+
+.chat p {
+    margin: 0;
+    padding: 0;
+    font-size: small;
+}
+
+.chat div.imagen-contenedor {
+    width: 40px;
+}
+
+.chat div.imagen-contenedor img {
+    width: 100%;
+    border-radius: 50%;
+}
+
+.chat div.informacion-chat {
+    width: 100%;
+    padding-left: 12px;    
+}
+
+.chat p.hora-ultimo-mensaje {
+    display: flex;
+    justify-content: flex-end;
+    width: 60px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+/* Chat abierto */
+
+#chat-abierto-contenedor {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: rgba(14, 63, 126, 0.06) 0px 0px 0px 1px, rgba(42, 51, 70, 0.03) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 2px 2px -1px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.03) 0px 5px 5px -2.5px, rgba(42, 51, 70, 0.03) 0px 10px 10px -5px, rgba(42, 51, 70, 0.03) 0px 24px 24px -8px;
+}
+
+/* Default chat abierto */
+#default-chat-abierto {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    justify-content: center;
+    align-items: center;
+    background-color: #FAFAFAFA;
+}
+
+#default-chat-abierto img {
+    width: 200px;
+}
+
+#default-chat-abierto h2 {
+    color: #C2C2C2;
+}
+
+/* Encabezado */
+
+#encabezado {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+}
+
+#encabezado p.nombre-comprador {
+    margin: 0;
+    padding: 0;
+    padding-left: 12px;
+}
+
+#encabezado div.imagen-contenedor {
+    width: 48px;
+}
+
+#encabezado div.imagen-contenedor img {
+    width: 100%;
+    border-radius: 50%;
+}
+
+/* Contenedor de mensajes */
+#mensajes-contenedor {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.mensaje {
+    display: flex;
+    align-items: flex-end;
+    padding: 8px;
+    height: fit-content;
+}
+
+.mensaje p.contenido {
+    margin: 0;
+    padding: 8px 12px;    
+    font-size: small;    
+    max-width: 70%;
+    word-wrap: break-word;
+    background-color: #F2F2F2;
+}
+
+.mensaje div.imagen-contenedor img {
+    width: 24px;
+    visibility: hidden;
+    border-radius: 50%;
+}
+
+.ultimo-mensaje div.imagen-contenedor img{
+    visibility: visible;
+}
+
+.usuario-chat p.contenido {
+    margin-left: 8px;
+    border-radius: 12px 12px 12px 0;
+}
+
+.usuario-actual {
+    justify-content: flex-end;
+}
+
+.usuario-actual p.contenido {
+    margin-right: 8px;
+    border-radius: 12px 12px 0px 12px;
+}
+
+/* Barra para mensajear */
+#barra-mensajear {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+}
+
+#barra-mensajear i {
+    color: 	#ffc510;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#barra-mensajear form {
+    width: 100%;
+    padding: 0px 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#barra-mensajear form input{
+    font-size: small;
+    width: 100%;
+    padding: 8px;
+    border-radius: 30px;
+    border: none;    
+    background-color: #F2F2F2;
+    resize: none;
+    overflow-y: hidden;
+    height: 30px;
+    max-height: 120px;
+    box-sizing: border-box;
+    outline: none; /* Elimina el borde del focus */    
+}
+
+
+#barra-mensajear button {
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    display: none;
+}
+
+#barra-mensajear button.disabled i {
+    color: #F2F2F2;
+}

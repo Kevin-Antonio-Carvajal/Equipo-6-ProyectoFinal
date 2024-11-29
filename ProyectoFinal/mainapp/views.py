@@ -1,10 +1,11 @@
 
-from django.db.models import Q
+from django.db.models import Q, Max
 from django.contrib import messages
 from django.http import JsonResponse
 from .models import *
 from .forms import FormRegistro, FormLogin
 from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404
 from mainapp.context_processors import get_usuario
 from mainapp.CryptoUtils import cipher, sha256, validate
 from django.shortcuts import get_object_or_404
