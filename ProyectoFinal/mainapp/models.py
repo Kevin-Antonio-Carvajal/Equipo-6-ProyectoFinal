@@ -87,3 +87,14 @@ class ListaDeseos(models.Model):
 
     def __str__(self):
         return f"{self.usuario.username} - {self.comic.nombre}"
+    
+# TABLA NOTIFICACION
+class Notificacion(models.Model):
+    id_notificacion = models.AutoField(primary_key=True)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="notificaciones")
+    contenido = models.TextField(null=False, blank=False)
+    fecha_emision = models.DateTimeField(auto_now_add=True)
+    visto = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Notificación para {self.usuario.username} - {'Vista' if self.visto else 'No vista'}"

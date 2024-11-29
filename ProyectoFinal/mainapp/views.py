@@ -139,12 +139,12 @@ def registrar_comic(request):
 
 def crear_comic(request):    
     if request.method == 'POST':
-        # Obtenemos el usuario que inicio sesion
+        # Obtenemos el usuario que inició sesión
         usuario_contexto = get_usuario(request)
         usuario = usuario_contexto.get('usuario')
-        # Verificamos que se haya iniciado sesion
+        # Verificamos que se haya iniciado sesión
         if usuario is None:
-            error = 'Debes iniciar sesion para registrar un producto'
+            error = 'Debes iniciar sesión para registrar un producto'
             messages.error(request, error)
             return JsonResponse({'success': False, 'error': error}, status=403)
         # Verificamos el rol del usuario
@@ -169,17 +169,30 @@ def crear_comic(request):
             error = 'El vendedor no existe'
             messages.error(request, error)
             return JsonResponse({'success': False, 'error': error}, status=404)
-        # Creamos el producto
+        # Creamos el cómic
         comic = Comic.objects.create(
             vendedor=vendedor,
             nombre=nombre,
             descripcion=descripcion,
             imagen=imagen
         )
-        success = 'Comic registrado exitosamente'
+        
+        # Enviar notificación a todos los administradores
+        administradores = Usuario.objects.filter(
+            rol=1  # Rol de administrador
+        )
+        for admin in administradores:
+            Notificacion.objects.create(
+                usuario=admin,
+                contenido=f"Se ha registrado un nuevo cómic: '{comic.nombre}' por el vendedor {vendedor.username}."
+            )
+
+        # Respuesta de éxito
+        success = 'Comic registrado exitosamente y notificaciones enviadas a los administradores'
         messages.success(request, success)
         return JsonResponse({'success': True, 'message': success}, status=200)
-    return JsonResponse({'success': False, 'error': 'Metodo invalido'}, status=400)
+
+    return JsonResponse({'success': False, 'error': 'Método inválido'}, status=400)
 
 def buscar_comics(request):
     query = request.GET.get('q', '')
@@ -424,16 +437,24 @@ def mensajes(request):
                     'ultimo_mensaje': ultimo_mensaje
                 }
 
+    # Verificar si hay mensajes sin leer
+    hay_mensajes_sin_leer = Mensaje.objects.filter(
+        receptor_id=usuario_id,
+        visto=False
+    ).exists()
+
     # Convertir los valores del diccionario en una lista para el contexto
     chats = list(chats_unicos.values())
 
     # Contexto para la plantilla
     contexto = {
         'titulo': 'Chats',
-        'chats': chats
+        'chats': chats,
+        'hay_mensajes_sin_leer': hay_mensajes_sin_leer  # Bandera para mensajes no leídos
     }
 
     return render(request, 'mainapp/mensajes.html', contexto)
+
 
 def get_mensajes(request, id_usuario):
     # Obtenemos el usuario que inició sesión
@@ -478,6 +499,14 @@ def get_mensajes(request, id_usuario):
         Q(emisor_id=usuario_actual_id, receptor_id=id_usuario) | 
         Q(emisor_id=id_usuario, receptor_id=usuario_actual_id)
     ).order_by('fecha_emision')
+    
+    # Marcar como vistos todos los mensajes recibidos por el usuario actual de este chat
+    Mensaje.objects.filter(
+        receptor_id=usuario_actual_id,
+        emisor_id=id_usuario,
+        visto=False
+    ).update(visto=True)
+
     # Serializamos los mensajes
     mensajes_serializados = [
         {
@@ -490,6 +519,7 @@ def get_mensajes(request, id_usuario):
         }
         for mensaje in mensajes
     ]
+
     return JsonResponse(
         {
             'success': True,

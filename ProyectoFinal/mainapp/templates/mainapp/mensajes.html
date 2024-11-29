@@ -30,7 +30,14 @@
                                     {{ chat.usuario.username|slice:":23" }}{% if chat.usuario.username.contenido|length > 23 %}...{% endif %}
                                 </span></p>
                             <p class="ultimo-mensaje">
-                                {{ chat.ultimo_mensaje.contenido|slice:":23" }}{% if chat.ultimo_mensaje.contenido|length > 23 %}...{% endif %}
+                                <!-- Verificamos si los mensajes no se han visto -->
+                                {% if hay_mensajes_sin_leer %}
+                                    <span class="bold">
+                                        {{ chat.ultimo_mensaje.contenido|slice:":23" }}{% if chat.ultimo_mensaje.contenido|length > 23 %}...{% endif %}
+                                    </span>
+                                {% else %}
+                                    {{ chat.ultimo_mensaje.contenido|slice:":23" }}{% if chat.ultimo_mensaje.contenido|length > 23 %}...{% endif %}
+                                {% endif %}
                             </p>
                         </div>
                         <!-- Tuberias personalizadas -->

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Rol, Usuario, Comic, Oferta, Mensaje
+from .models import Rol, Usuario, Comic, Oferta, Mensaje, Notificacion
 
 # Configuracion para mostrar los modelos en el panel de administracion
 class UsuarioAdmin(admin.ModelAdmin):
@@ -39,9 +39,18 @@ class MensajeAdmin(admin.ModelAdmin):
         'id_mensaje',   
     )
 
+# Configuracion para mostrar los modelos en el panel de administracion
+class NotificacionAdmin(admin.ModelAdmin):
+    readonly_fields = (
+        'id_notificacion',
+        'usuario',
+        'fecha_emision'
+    )
+
 # Agregamos al panel de administracion
 admin.site.register(Usuario, UsuarioAdmin)
 admin.site.register(Rol, RolAdmin)
 admin.site.register(Comic, ComicAdmin)
 admin.site.register(Oferta, OfertaAdmin)
 admin.site.register(Mensaje, MensajeAdmin)
+admin.site.register(Notificacion, NotificacionAdmin)
