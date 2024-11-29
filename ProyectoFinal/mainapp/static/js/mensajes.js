@@ -68,6 +68,8 @@ const montarChatAbierto = (data) => {
         mensajesChatAbierto,
         barraMensajear
     )    
+    // Hacemos scroll hasta abajo
+    scrollToBottom()
 }
 
 const crearEncabezadoChatAbierto = (nombre) => {
@@ -100,22 +102,56 @@ const crearEncabezadoChatAbierto = (nombre) => {
 
 const crearMensajesChatAbierto = (idUsuarioActual, idUsuarioChat, mensajes) => {
     // Contenedor de los mensajes
-    const contenedorMensajes = document.createElement('div')    
-    contenedorMensajes.id = 'mensajes-contenedor'
-    // Creamos el componente para cada mensaje
-    for (let i = 0 ; i < mensajes.length ; i++){
-        const mensaje = mensajes[i]
-        const esUltimo = i === mensajes.length - 1; // Verificar si es el último mensaje
-        // Si el mensaje lo envió el usuario actual:
-        let mensajeChatAbierto = null
-        if (mensaje['emisor_id']==idUsuarioActual){
-            mensajeChatAbierto = crearMensajeUsuarioActual(mensaje['contenido'], esUltimo && mensaje['emisor_id'] === idUsuarioActual);
-        } else {
-            mensajeChatAbierto = crearMensajeUsuarioChat(mensaje['contenido'], esUltimo && mensaje['emisor_id'] === idUsuarioChat);
+    const contenedorMensajes = document.createElement('div');
+    contenedorMensajes.id = 'mensajes-contenedor';
+
+    // Variables para rastrear los últimos mensajes de cada usuario
+    let ultimoMensajeUsuarioActual = null;
+    let ultimoMensajeUsuarioChat = null;
+
+    // Iterar sobre los mensajes para determinar los últimos de cada usuario
+    for (let i = 0; i < mensajes.length; i++) {
+        const mensaje = mensajes[i];
+        if (mensaje.emisor_id === idUsuarioActual) {
+            ultimoMensajeUsuarioActual = mensaje;
+        } else if (mensaje.emisor_id === idUsuarioChat) {
+            ultimoMensajeUsuarioChat = mensaje;
         }
-        contenedorMensajes.appendChild(mensajeChatAbierto)
     }
-    return contenedorMensajes
+
+    // Crear los componentes de mensajes
+    for (let i = 0; i < mensajes.length; i++) {
+        const mensaje = mensajes[i];
+        const esUltimoUsuarioActual =
+            mensaje.id === ultimoMensajeUsuarioActual?.id;
+        const esUltimoUsuarioChat =
+            mensaje.id === ultimoMensajeUsuarioChat?.id;
+
+        let mensajeChatAbierto = null;
+
+        // Si el mensaje lo envió el usuario actual
+        if (mensaje.emisor_id === idUsuarioActual) {
+            mensajeChatAbierto = crearMensajeUsuarioActual(
+                mensaje.contenido,
+                esUltimoUsuarioActual
+            );
+        } else {
+            // Si el mensaje lo envió el usuario del chat
+            mensajeChatAbierto = crearMensajeUsuarioChat(
+                mensaje.contenido,
+                esUltimoUsuarioChat
+            );
+        }
+
+        contenedorMensajes.appendChild(mensajeChatAbierto);
+    }
+
+    return contenedorMensajes;
+};
+
+const scrollToBottom = () => {
+    const contenedorMensajes = document.getElementById('mensajes-contenedor');
+    contenedorMensajes.scrollTop = contenedorMensajes.scrollHeight;
 }
 
 const crearMensajeUsuarioActual = (mensaje, esUltimo) => {
@@ -181,6 +217,7 @@ const crearMensajeUsuarioChat = (mensaje, esUltimo) => {
 
     return contenedor;
 };
+
 
 const crearBarraMensajearChatAbierto = (idUsuarioActual, idUsuarioChat) => {
     // Crear el contenedor principal
@@ -310,6 +347,8 @@ const agregarMensaje = (formData) => {
     const hora = fechaActual = formatoFecha(new Date());
     chatAbierto.querySelector('.ultimo-mensaje').textContent = truncarCadena(mensaje)
     chatAbierto.querySelector('.hora-ultimo-mensaje').textContent = hora
+    // Hacemos scroll hasta abajo
+    scrollToBottom()
 }
 
 const truncarCadena = (cadena) => {

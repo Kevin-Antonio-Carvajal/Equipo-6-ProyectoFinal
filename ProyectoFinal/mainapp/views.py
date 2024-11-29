@@ -292,38 +292,39 @@ def mensajes(request):
     # Obtenemos el usuario que inició sesión
     usuario_contexto = get_usuario(request)
     usuario = usuario_contexto.get('usuario')
-    
+
     # Verificamos que se haya iniciado sesión
     if usuario is None:
         messages.error(request, 'Debes iniciar sesión para poder ver tus mensajes')
         return redirect('login')
-    
+
     # Obtenemos el ID del usuario actual
     usuario_id = usuario.get('id')
-    
-    # Obtener los últimos mensajes por chat con cada usuario
+
+    # Obtener los últimos mensajes únicos por usuario con anotación
     mensajes_usuario = Mensaje.objects.filter(
         Q(emisor_id=usuario_id) | Q(receptor_id=usuario_id)
-    ).annotate(ultima_fecha=Max('fecha_emision')).values(
+    ).annotate(
+        ultima_fecha=Max('fecha_emision')
+    ).values(
         'emisor_id', 'receptor_id', 'ultima_fecha'
     )
 
-    # Usamos un diccionario para evitar repetidos
+    # Usamos un diccionario para evitar duplicados por conversación
     chats_unicos = {}
 
     for mensaje in mensajes_usuario:
         # Determinamos el otro usuario en la conversación
         otro_usuario_id = mensaje['emisor_id'] if mensaje['emisor_id'] != usuario_id else mensaje['receptor_id']
-        
-        # Evitar duplicados en el diccionario
+
+        # Evitar duplicados
         if otro_usuario_id not in chats_unicos:
             # Obtener el último mensaje entre ambos usuarios
             ultimo_mensaje = Mensaje.objects.filter(
-                Q(emisor_id=usuario_id, receptor_id=otro_usuario_id) | 
-                Q(receptor_id=usuario_id, emisor_id=otro_usuario_id),
-                fecha_emision=mensaje['ultima_fecha']
-            ).first()
-            
+                Q(emisor_id=usuario_id, receptor_id=otro_usuario_id) |
+                Q(receptor_id=usuario_id, emisor_id=otro_usuario_id)
+            ).order_by('-fecha_emision').first()
+
             # Obtener los datos del otro usuario
             otro_usuario = Usuario.objects.filter(id_usuario=otro_usuario_id).values(
                 'id_usuario', 'username', 'nombre', 'correo'
@@ -344,7 +345,7 @@ def mensajes(request):
         'titulo': 'Chats',
         'chats': chats
     }
-    
+
     return render(request, 'mainapp/mensajes.html', contexto)
 
 def get_mensajes(request, id_usuario):
