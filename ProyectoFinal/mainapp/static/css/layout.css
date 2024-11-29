@@ -65,3 +65,97 @@ body {
     font-size: 18px;
 }
 
+/* Contenedor del icono de la campana */
+.nav-link {
+    position: relative;
+}
+
+/* Estilo del contador de notificaciones */
+#notificaciones-count {
+    position: absolute;
+    top: -2px;
+    right: -2px; 
+    background-color: #ff3b3b;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+/* Ocultar el contador si no hay notificaciones */
+#notificaciones-count:empty {
+    display: none;
+}
+
+/* Contenedor de la lista de notificaciones */
+#notificaciones-list {
+    max-height: 400px; 
+    overflow-y: auto;
+    padding: 10px;
+    background-color: aliceblue;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Tarjeta de cada notificación */
+#notificaciones-list .dropdown-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+#notificaciones-list .dropdown-item:hover {
+    transform: translateY(-2px);
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+/* Icono de la notificación */
+.notificacion-icono {
+    font-size: 24px;
+    color: #ffb300;
+}
+
+/* Contenido principal de la notificación */
+.notificacion-contenido {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.notificacion-contenido strong {
+    font-size: 16px;
+    color: #343a40;
+    margin-bottom: 5px;
+}
+
+.notificacion-contenido small {
+    color: #6c757d;
+    font-size: 14px;
+}
+
+/* Estilo para ofertas no vistas */
+.dropdown-item.unread {
+    border-left: 4px solid #ffb300; 
+}
+
+/* Mensaje de "No hay ofertas" */
+.no-notificaciones {
+    text-align: center;
+    color: #6c757d;
+    font-size: 16px;
+    padding: 15px 0;
+}

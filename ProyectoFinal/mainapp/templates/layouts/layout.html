@@ -56,10 +56,15 @@
             <!-- Enlaces a la derecha -->
             <ul class="navbar-nav ms-auto">
                 {% if usuario %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
+                    <!-- Notificaciones -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#" id="notificacionesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-bell"></i>
+                            <span id="notificaciones-count"></span>
                         </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificacionesDropdown" id="notificaciones-list">
+                            <li class="dropdown-item text-center">Cargando...</li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">
@@ -121,6 +126,24 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoA6zV2rDr0Wly5PYyIbE+OTMyME69Qo8dJWoz7ZW7El/2m" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('/notificaciones/')
+                .then(response => response.json())
+                .then(data => {
+                    const notificacionesCount = document.getElementById('notificaciones-count');
+                    if (data.ofertas && data.ofertas.length > 0) {
+                        notificacionesCount.textContent = data.ofertas.length; 
+                    } else {
+                        notificacionesCount.textContent = ''; 
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al obtener notificaciones:', error);
+                });
+        });
+    </script>        
+    <script src="{% static 'js/notificaciones.js' %}"></script>
 </body>
 </html>
