@@ -19,9 +19,9 @@ i.back {
     cursor: pointer;
 }
 
-i.back:hover {
+/* i.back:hover {
     color: #ffc510;
-}
+} */
 
 /* Sin comics */
 
@@ -53,6 +53,9 @@ i.back:hover {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .comic img {
@@ -70,16 +73,51 @@ i.back:hover {
     color: #666;
 }
 
-.comic button {
-    margin-top: 10px;
+/* Contenedor de botones */
+#botones {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Boton para eliminar comic */
+
+.comic button.btn-eliminar-comic {
+    width: 100%;
     background: #d9534f;
     color: white;
     border: none;
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 12px;
     cursor: pointer;
 }
 
-.comic button:hover {
+.comic button.btn-eliminar-comic:hover {
     background: #c9302c;
 }
+
+/* Boton para hacer oferta */
+
+.comic form.oferta-form {
+    width: 100%;
+}
+
+.comic .oferta-form button {
+    width: 100%;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(145deg, #ffd700, #ffc400);
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.comic .oferta-form button:hover {
+    background: linear-gradient(145deg, #ffc400, #ffb300);
+    transform: translateY(-2px);
+}
+

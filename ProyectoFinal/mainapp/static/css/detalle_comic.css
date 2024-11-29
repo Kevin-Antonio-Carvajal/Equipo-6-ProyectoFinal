@@ -47,6 +47,44 @@ i.back:hover {
 
 .details-container {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.details-container div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+/* Botón de favorito */
+.favorito-form {
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+}
+
+.favorito-btn {
+    background-color: rgba(255, 255, 255, 0.973); 
+    border: none;
+    font-size: 1.5rem;
+    color: #ff4757;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.favorito-btn:hover {
+    background-color: #ff6b81; 
+    color: #ffffff;
+    transform: scale(1.1);
 }
 
 .details-container h1 {

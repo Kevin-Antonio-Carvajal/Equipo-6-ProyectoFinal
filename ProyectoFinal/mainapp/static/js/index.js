@@ -225,7 +225,8 @@ const tick = () =>
     // Render
     renderer.render(scene, camera)
 
-    console.log(camera.position)
+    // Imprimimos la posicion de la camara
+    // console.log(camera.position)
 
     // Call tick again on the next frame
     window.requestAnimationFrame(tick)

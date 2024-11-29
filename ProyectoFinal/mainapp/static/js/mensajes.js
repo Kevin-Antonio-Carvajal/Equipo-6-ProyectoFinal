@@ -223,14 +223,6 @@ const crearBarraMensajearChatAbierto = (idUsuarioActual, idUsuarioChat) => {
     // Crear el contenedor principal
     const barraMensajear = document.createElement('div');
     barraMensajear.id = 'barra-mensajear';
-    // Crear el ícono de hacer oferta
-    const iconoOferta = document.createElement('i');
-    iconoOferta.classList.add('fa-solid', 'fa-arrow-right-arrow-left');
-    iconoOferta.setAttribute('data-bs-toggle', 'tooltip');
-    iconoOferta.setAttribute('title', 'Hacer oferta');
-    iconoOferta.setAttribute('data-id-usuario-actual', idUsuarioActual);
-    iconoOferta.setAttribute('data-id-usuario-chat', idUsuarioChat);
-    iconoOferta.setAttribute('onclick', 'mandarOferta(event)');
     // Crear el formulario
     const formulario = document.createElement('form');
     formulario.id = 'formulario-mandar-mensaje';
@@ -255,18 +247,10 @@ const crearBarraMensajearChatAbierto = (idUsuarioActual, idUsuarioChat) => {
     // Agregar el campo de entrada y el botón al formulario
     formulario.appendChild(inputMensaje);
     formulario.appendChild(botonEnviar);
-    // Agregar el ícono de oferta y el formulario al contenedor principal
-    barraMensajear.appendChild(iconoOferta);
+    // Agregar el formulario al contenedor principal
     barraMensajear.appendChild(formulario);
     return barraMensajear;
 };
-
-const mandarOferta = async (event) => {
-    // Id del usuario actual
-    const idUsuarioActual = event.target.getAttribute('data-id-usuario-actual')
-    // Id del usuario del chat
-    const idUsuarioChat = event.target.getAttribute('data-id-usuario-chat')
-}
 
 const mandarMensaje = async (event) => {
     event.preventDefault()    

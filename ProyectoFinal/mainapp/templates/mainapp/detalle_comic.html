@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="{% static 'css/detalle_comic.css' %}">
 <!-- Contenido principal -->
 <div id="main-container">
-    <div id="product-container">
+    <div id="product-container" class="comic" data-comic-id="{{ comic.id_comic }}">
         <!-- Titulo -->
         <div class="titulo">
             <i class="fa-solid fa-arrow-left back" onclick="backPage()" style="cursor: pointer;"></i>
@@ -23,20 +23,35 @@
                 <img src="{{ comic.imagen.url }}" alt="Imagen del cómic">
             </div>
             <div class="details-container">
-                <h1>{{ comic.nombre }}</h1>
+                <div>
+                    <h4>{{ comic.nombre }}</h4>
+                    <!-- Botón de favorito como ícono de corazón -->
+                    {% if usuario.rol == 2 %}
+                        <form method="POST" action="{% url 'agregar_a_lista_deseos' comic.id_comic %}" class="favorito-form">
+                            {% csrf_token %}
+                            <button type="submit" class="favorito-btn">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
                 <p><strong>Vendedor:</strong> {{ comic.vendedor.username }}</p>
                 <p><strong>Descripción:</strong> {{ comic.descripcion }}</p>
-                <!-- Solo los compradores pueden agregar a la lista de deseos -->
-                {% if usuario.rol == 2 %}
-                    <form method="POST" action="{% url 'agregar_a_lista_deseos' comic.id_comic %}">
+                <!-- Solo los compradores pueden agregar a la lista de deseos y hacer ofertas-->
+                {% if not item.oferta_relacionada %}
+                    {% if usuario.rol == 2 %}
+                    <form method="POST" action="{% url 'hacer_oferta' comic.id_comic %}" class="oferta-form">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-primary">Agregar a la Lista de Deseos</button>
+                        <button type="submit" class="btn btn-primary">Hacer oferta</button>
                     </form>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>
     </div>
 </div>
+<!-- Incluir la ventana modal -->
+{% include 'partials/modal_oferta.html' %}
 <!-- Javascript -->
 <script>
     // Regresa a la pagina anterior
@@ -45,4 +60,5 @@
         window.history.back();
     }
 </script>
+<script src="{% static 'js/modal_oferta.js' %}"></script>
 {% endblock %}

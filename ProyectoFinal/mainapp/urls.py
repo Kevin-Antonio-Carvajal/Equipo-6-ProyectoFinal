@@ -66,4 +66,20 @@ urlpatterns = [
          views.hacer_oferta, 
          name='hacer_oferta'
     ),
+    path(
+        'mensajes/',
+        views.mensajes,
+        name='mensajes'
+    ),
+    path(
+        'get_mensajes/<int:id_usuario>/',
+        views.get_mensajes,
+        name='get_mensajes'
+    ),
+    path(
+        'mandar_mensaje/',
+        views.mandar_mensaje,
+        name='mandar_mensaje'
+    )
+
 ]

@@ -20,13 +20,22 @@
         {% if lista_deseos %}
             <div id="lista-deseos" class="wishlist">                
                 {% for item in lista_deseos %}
-                <div id="comic-{{ item.comic.id_comic }}" class="comic">
+                <div id="comic-{{ item.comic.id_comic }}" class="comic"  data-comic-id="{{ item.comic.id_comic }}">
                     <img src="{{ item.comic.imagen.url }}" alt="Imagen del cómic">
-                    <h3>{{ item.comic.nombre }}</h3>
+                    <h3>{{ item.comic.nombre }}</h3>                    
                     <p>{{ item.comic.descripcion|slice:":100" }}...</p>                
-                    <button onclick="eliminarComic({{ item.comic.id_comic }})">Eliminar</button>
+                    <div id="botones">
+                        <!-- Verificamos si hay una oferta relacionada -->
+                        {% if not item.oferta_relacionada %}
+                        <form method="POST" action="{% url 'hacer_oferta' item.comic.id_comic %}" class="oferta-form">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">Hacer oferta</button>
+                        </form>
+                        {% endif %}
+                        <button class="btn-eliminar-comic" onclick="eliminarComic({{ item.comic.id_comic }})">Eliminar</button>                        
+                    </div>
                 </div>
-                {% endfor %}            
+                {% endfor %} 
             </div>            
         {% endif %}
         <div id="not-found" class="{% if lista_deseos %}hidden{% endif %}">
@@ -35,6 +44,9 @@
         </div>
     </div>
 </div>
+<!-- Incluir la ventana modal -->
+{% include 'partials/modal_oferta.html' %}
 <!-- Javascript -->
- <script src="{% static 'js/lista_deseos.js' %}"></script>
+<script src="{% static 'js/modal_oferta.js' %}"></script>
+<script src="{% static 'js/lista_deseos.js' %}"></script>
 {% endblock %}
