@@ -20,7 +20,12 @@
             <p>TODOS LOS COMICS</p>
             <h1>A TU ALCANCE</h1>
             <p>COMIENZA A COMPRAR</p>
-            <a href="{% url 'register' %}">Registrarse</a>
+            <!-- Verificamos si se ha iniciado sesion -->
+            {% if usuario %}                
+                <a href="{% url 'buscar_comics' %}">Ver Comics</a>
+            {% else %}
+                <a href="{% url 'register' %}">Registrarse</a>
+            {% endif %}
         </div>        
     </div>    
     <div id="about-us">
