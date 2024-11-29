@@ -28,15 +28,57 @@
                 <p><strong>Descripción:</strong> {{ comic.descripcion }}</p>
                 <!-- Solo los compradores pueden agregar a la lista de deseos -->
                 {% if usuario.rol == 2 %}
-                    <form method="POST" action="{% url 'agregar_a_lista_deseos' comic.id_comic %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-primary">Agregar a la Lista de Deseos</button>
-                    </form>
+                    <div class="button-container">
+                        <!-- Botón de agregar a favoritos -->
+                        <form method="POST" action="{% url 'agregar_a_lista_deseos' comic.id_comic %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-red">
+                                <i class="fa-solid fa-heart"></i> Agregar a Favoritos
+                            </button>
+                        </form>
+                        <!-- Botón de hacer oferta -->
+                        <button class="btn btn-yellow" onclick="openModal()">
+                            <i class="fa-solid fa-handshake"></i> Hacer Oferta
+                        </button>
+                    </div>
+                {% else %}
+                    <div class="button-container"></div>
                 {% endif %}
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal para Hacer Oferta -->
+<div id="modal-oferta" class="modal">
+    <div class="modal-content">
+        <!-- Botón de cierre -->
+        <button class="close" onclick="closeModal()">&times;</button>
+
+        <!-- Título del Modal -->
+        <h2 style="text-align: center; color: #333; margin-bottom: 20px;">Hacer una Oferta</h2>
+
+        <!-- Formulario -->
+        <form method="POST" action="{% url 'hacer_oferta' comic.id_comic %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- Campo: Objeto o Servicio -->
+            <label for="objeto">Objeto o Servicio:</label>
+            <input type="text" id="objeto" name="objeto" required placeholder="Ejemplo: Figura coleccionable">
+
+            <!-- Campo: Descripción -->
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" name="descripcion" rows="4" required placeholder="Describe tu oferta o servicio..."></textarea>
+
+            <!-- Campo: Imagen -->
+            <label for="imagen">Imagen del objeto o servicio:</label>
+            <input type="file" id="imagen" name="imagen" accept="image/*">
+
+            <!-- Botón de Enviar -->
+            <button type="submit" class="btn-enviar-oferta">Enviar Oferta</button>
+        </form>
+    </div>
+</div>
+
 <!-- Javascript -->
 <script>
     // Regresa a la pagina anterior
@@ -44,5 +86,26 @@
         // Regresamos a la pagina anterior
         window.history.back();
     }
+
+    // Obtener elementos del DOM
+    const modal = document.getElementById('modal-oferta');
+    const closeBtn = document.querySelector('.close');
+
+    // Abrir el modal
+    function openModal() {
+        modal.style.display = 'block';
+    }
+
+    // Cerrar el modal
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+
+    // Cerrar el modal si el usuario hace clic fuera de él
+    window.onclick = function (event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
 </script>
 {% endblock %}

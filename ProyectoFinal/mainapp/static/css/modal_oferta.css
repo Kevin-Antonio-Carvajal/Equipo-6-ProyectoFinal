@@ -62,7 +62,7 @@
 
 /* Botón de envío */
 .btn-enviar-oferta {
-    background-color: #ffc400;
+    background-color: #ffb300;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -76,6 +76,6 @@
 }
 
 .btn-enviar-oferta:hover {
-    background-color: #ffb300;
+    background-color: #eaa400;
     transform: translateY(-2px);
 }
