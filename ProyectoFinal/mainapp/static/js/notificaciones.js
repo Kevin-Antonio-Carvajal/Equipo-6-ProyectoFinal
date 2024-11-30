@@ -20,11 +20,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 listItem.innerHTML = `
                     <i class="fas fa-tag notificacion-icono"></i>
                     <div class="notificacion-contenido">
-                        <strong>${oferta.emisor} ofreció: ${oferta.objeto}</strong>
+                        <div>
+                            <strong>${oferta.emisor} ofreció:</strong> ${oferta.objeto}
+                        </div>
                         <small>${oferta.comic}</small>
                     </div>
                 `;
-
+            
+            
                 // Marcar como vista al hacer clic
                 listItem.addEventListener('click', () => {
                     fetch(`/marcar-notificacion-vista/${oferta.id}/`, { method: 'POST' })
@@ -49,5 +52,4 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Error al obtener notificaciones:', error);
         document.getElementById('notificaciones-list').innerHTML = '<li class="no-notificaciones">Error al cargar ofertas</li>';
     });
-
 });
