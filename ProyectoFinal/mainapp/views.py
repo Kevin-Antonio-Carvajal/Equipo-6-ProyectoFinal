@@ -11,6 +11,7 @@ from mainapp.context_processors import get_usuario
 from mainapp.CryptoUtils import cipher, sha256, validate
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
+from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
 
@@ -383,7 +384,7 @@ def hacer_oferta(request, comic_id):
         # Redirigir a la página de referencia o a una página por defecto
         if referer_url:
             return HttpResponseRedirect(referer_url)
-        return redirect('index')  # Redirige al inicio si no hay una URL de referencia
+        return redirect('index') 
 
     messages.error(request, 'Método no permitido.')
     return redirect('index')
@@ -572,3 +573,43 @@ def mandar_mensaje(request):
             error = f'Error al registrar el mensaje: {str(e)}'
             return JsonResponse({'success': False, 'error': error}, status=500)
     return JsonResponse({'success': False, 'error': 'Metodo invalido'}, status=400)
+
+def obtener_notificaciones(request):
+    # Verificamos si el usuario ha iniciado sesión mediante la sesión
+    usuario_id = request.session.get('usuario_id')
+    usuario_rol = request.session.get('usuario_rol')
+
+    if not usuario_id:  
+        return JsonResponse({'error': 'No autorizado'}, status=403)
+
+    if usuario_rol == 3:  # Solo vendedores
+        receptor = get_object_or_404(Usuario, id_usuario=usuario_id)  
+        ofertas_no_vistas = Oferta.objects.filter(receptor=receptor, visto=False).select_related('comic', 'emisor')
+        data = [
+            {
+                'id': oferta.id_oferta,
+                'comic': oferta.comic.nombre,
+                'emisor': oferta.emisor.username,
+                'objeto': oferta.objeto,
+            }
+            for oferta in ofertas_no_vistas
+        ]
+        return JsonResponse({'ofertas': data})
+    
+    return JsonResponse({'ofertas': []}) 
+
+
+
+@csrf_exempt
+def marcar_notificacion_vista(request, oferta_id):
+    if request.method == 'POST':
+        usuario_id = request.session.get('usuario_id')
+        if usuario_id:
+            receptor = get_object_or_404(Usuario, id_usuario=usuario_id)  
+            oferta = get_object_or_404(Oferta, id_oferta=oferta_id, receptor=receptor)
+            oferta.visto = True
+            oferta.save()
+            return JsonResponse({'success': True})
+    
+    return JsonResponse({'error': 'No autorizado'}, status=403)
+

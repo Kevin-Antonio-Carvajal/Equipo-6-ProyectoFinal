@@ -80,6 +80,13 @@ urlpatterns = [
         'mandar_mensaje/',
         views.mandar_mensaje,
         name='mandar_mensaje'
+    ),
+    path('notificaciones/', 
+         views.obtener_notificaciones, 
+         name='notificaciones'
+    ),
+    path('marcar-notificacion-vista/<int:oferta_id>/', 
+         views.marcar_notificacion_vista, 
+         name='marcar_notificacion_vista'
     )
-
 ]
