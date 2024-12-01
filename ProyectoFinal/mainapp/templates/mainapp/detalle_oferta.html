@@ -1,0 +1,91 @@
+<!-- Agregamos el layout -->
+{% extends '../layouts/layout.html' %}
+
+<!-- Folder static -->
+{% load static %}
+
+{% block titulo %}
+    {{ titulo }}
+{% endblock %}
+
+<!-- Tuberias personalizadas -->
+{% load filters %}
+
+<!-- Contenido principal -->
+{% block content %}   
+    <!--Estilos  -->
+    <link rel="stylesheet" href="{% static 'css/detalle_oferta.css' %}">
+    <div id="main-container">
+        <div id="oferta-container">
+            <!-- Titulo -->
+            <div class="titulo">
+                <i class="fa-solid fa-arrow-left back" onclick="backPage()" style="cursor: pointer;"></i>
+                <h4>{{ titulo }}</h4>
+                <i class="fa-solid fa-x tache"></i>
+            </div>
+            <!-- Oferta -->
+             <div id="oferta-{{ oferta.id_oferta }}" class="oferta rows">
+                <div class="imagen-container col-4">
+                    <img src="{{ oferta.imagen.url }}" alt="">
+                </div>
+                <div id="oferta-info" class="col-8">                    
+                    <div class="info">
+                        <p class="objeto">
+                            <span class="bold">Objeto: </span> {{ oferta.objeto }}
+                        </p>
+                        <p>
+                            <span class="bold">Descripcion: </span> {{ oferta.descripcion }}
+                        </p>
+                        <p class="comic">
+                            <span class="bold">Intercambio por: </span>
+                            <a href="{% url 'detalle_comic' oferta.comic.id_comic %}">
+                                {{ oferta.comic.nombre}}
+                            </a>
+                        </p>
+                        <p>
+                            <span class="bold">Usuario: </span> {{ oferta.emisor.nombre }}                        
+                        </p>
+                        <p class="estatus">                        
+                            <span class="bold">
+                                Estatus: 
+                            </span>
+                            {% if oferta.aceptada is None %}
+                                <span class="pendiente">
+                                    pendiente
+                                </span>
+                            {% else %}
+                                {% if oferta.aceptada == True %}
+                                    <span class="aceptada">
+                                        aceptada
+                                    </span>
+                                {% else %}
+                                    <span class="rechazada">
+                                        rechazada
+                                    </span>
+                                {% endif %}
+                            {% endif %}
+                        </p>
+                        <p class="fecha">
+                            <span class="bold">
+                                Fecha:
+                            </span>
+                            {{ oferta.fecha_emision }}
+                        </p>
+                    </div>
+                    {% if oferta.aceptada is None and usuario.id == 3 %}
+                        <div class="botones">
+                            <button class="btn btn-aceptar" onclick="aceptarOferta({{ oferta.id_oferta }})">
+                                <i class="fa-solid fa-handshake"></i> Aceptar oferta
+                            </button>
+                            <button class="btn btn-rechazar" onclick="rechazarOferta({{ oferta.id_oferta }})">
+                                <i class="fa-solid fa-xmark"></i>Rechazar oferta
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+             </div>
+        </div>
+    </div>    
+    <!-- Javascript -->
+    <script src="{% static 'js/detalle_oferta.js' %}"></script>
+{% endblock %}

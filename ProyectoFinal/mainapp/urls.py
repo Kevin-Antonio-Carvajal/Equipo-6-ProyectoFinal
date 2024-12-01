@@ -88,5 +88,25 @@ urlpatterns = [
     path('marcar-notificacion-vista/<int:oferta_id>/', 
          views.marcar_notificacion_vista, 
          name='marcar_notificacion_vista'
+    ),
+    path(
+        'ofertas/',
+        views.ofertas,
+        name='ofertas'
+    ),
+    path(
+        'aceptar_oferta/<int:id_oferta>',
+        views.aceptar_oferta,
+        name='aceptar_oferta'
+    ),
+    path(
+        'rechazar_oferta/<int:id_oferta>',
+        views.rechazar_oferta,
+        name='rechazar_oferta'
+    ),
+    path(
+        'detalle_oferta/<int:id_oferta>',
+        views.detalle_oferta,
+        name='detalle_oferta'
     )
 ]

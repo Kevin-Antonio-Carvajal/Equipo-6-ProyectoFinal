@@ -1,6 +1,6 @@
 
 from django.db import transaction
-from django.db.models import Q, Max, Exists, OuterRef
+from django.db.models import Q, Max, Exists, OuterRef, Subquery
 from django.contrib import messages
 from django.http import JsonResponse
 from .models import *
@@ -14,13 +14,25 @@ from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
+    # Usuario que inició sesión
+    usuario_contexto = get_usuario(request)
+    usuario = usuario_contexto.get('usuario')
 
-     # Obtener los 6 cómics más recientes que no han sido vendidos
+    # Inicializar la cantidad de mensajes sin leer
+    mensajes = 0
+
+    if usuario is not None:
+        # Obtener la cantidad de mensajes sin leer del usuario
+        mensajes = Mensaje.objects.filter(receptor_id=usuario['id'], visto=False).count()
+
+    # Obtener los 6 cómics más recientes que no han sido vendidos
     comics_recientes = Comic.objects.filter(venta__isnull=True).order_by('-created_at')[:6]
 
+    # Construir el contexto para el template
     contexto = {
         'titulo': 'Pagina principal',
-        'comics': comics_recientes
+        'comics': comics_recientes,
+        'mensajes': mensajes
     }
 
     return render(request, 'mainapp/index.html', contexto)
@@ -244,11 +256,16 @@ def ver_lista_deseos(request):
         messages.error(request, 'Solo los compradores pueden ver su lista de deseos')
         return redirect('index')
 
-    # Consulta con anotación para verificar si hay ofertas relacionadas
+    # Subconsulta para obtener la oferta más reciente relacionada con el cómic
+    oferta_reciente = Oferta.objects.filter(
+        comic_id=OuterRef('comic_id')
+    ).order_by('-fecha_emision')  # Ordenamos por fecha de emisión más reciente
+
+    # Consulta con anotación para incluir la oferta relacionada y su estado
     lista_deseos = ListaDeseos.objects.filter(usuario__id_usuario=usuario['id']).annotate(
-        oferta_relacionada=Exists(
-            Oferta.objects.filter(comic_id=OuterRef('comic_id'))
-        )
+        oferta_relacionada=Exists(oferta_reciente),
+        oferta_id=Subquery(oferta_reciente.values('id_oferta')[:1]),
+        oferta_estado=Subquery(oferta_reciente.values('aceptada')[:1])
     )
 
     contexto = {
@@ -313,25 +330,27 @@ def eliminar_de_lista_deseos(request, comic_id):
             # Obtener el cómic
             comic = get_object_or_404(Comic, id_comic=comic_id)
 
-            # Buscar la oferta relacionada al cómic y al usuario actual
-            oferta = Oferta.objects.filter(comic_id=comic_id, emisor_id=usuario['id']).first()
-
-            # Eliminar la oferta si existe
-            if oferta:
-                # Enviar mensaje al receptor notificando la eliminación de la oferta
+            # Eliminar todas las ofertas relacionadas al cómic
+            ofertas = Oferta.objects.filter(comic_id=comic_id)
+            for oferta in ofertas:
+                # Enviar mensaje al receptor notificando la eliminación de cada oferta
                 mensaje_contenido = f"El usuario '{usuario['username']}' eliminó la oferta '{oferta.objeto}' por el cómic '{comic.nombre}'"
                 Mensaje.objects.create(
                     emisor=Usuario.objects.get(id_usuario=usuario['id']),
                     receptor=comic.vendedor,
                     contenido=mensaje_contenido
                 )
-                oferta.delete()
+            # Eliminar las ofertas
+            ofertas.delete()
 
             # Eliminar el cómic de la lista de deseos
             ListaDeseos.objects.filter(usuario_id=usuario['id'], comic_id=comic_id).delete()
 
         # Enviar una respuesta exitosa
-        return JsonResponse({'success': True, 'message': 'Cómic eliminado de tu lista de deseos y oferta relacionada eliminada'}, status=200)
+        return JsonResponse({'success': True, 'message': 'Cómic eliminado de tu lista de deseos y todas las ofertas relacionadas eliminadas'}, status=200)
+
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
     except Exception as e:
         # Log para depuración
@@ -582,22 +601,39 @@ def obtener_notificaciones(request):
     if not usuario_id:  
         return JsonResponse({'error': 'No autorizado'}, status=403)
 
-    if usuario_rol == 3:  # Solo vendedores
-        receptor = get_object_or_404(Usuario, id_usuario=usuario_id)  
+    data = []
+
+    # Para vendedores
+    if usuario_rol == 3:  # Rol vendedor
+        receptor = get_object_or_404(Usuario, id_usuario=usuario_id)
         ofertas_no_vistas = Oferta.objects.filter(receptor=receptor, visto=False).select_related('comic', 'emisor')
-        data = [
+        data.extend([
             {
                 'id': oferta.id_oferta,
+                'tipo': 'oferta',
+                'mensaje': f"Has recibido una nueva oferta por '{oferta.comic.nombre}' de {oferta.emisor.username}.",
+                'objeto': oferta.objeto,
                 'comic': oferta.comic.nombre,
                 'emisor': oferta.emisor.username,
-                'objeto': oferta.objeto,
             }
             for oferta in ofertas_no_vistas
-        ]
-        return JsonResponse({'ofertas': data})
-    
-    return JsonResponse({'ofertas': []}) 
+        ])
 
+    # Para compradores
+    if usuario_rol == 2:  # Rol comprador
+        emisor = get_object_or_404(Usuario, id_usuario=usuario_id)
+        notificaciones = Notificacion.objects.filter(usuario=emisor, visto=False)
+        data.extend([
+            {
+                'id': notificacion.id_notificacion,
+                'tipo': 'notificacion',
+                'mensaje': notificacion.contenido,
+                'fecha': notificacion.fecha_emision.strftime('%Y-%m-%d %H:%M:%S'),
+            }
+            for notificacion in notificaciones
+        ])
+
+    return JsonResponse({'notificaciones': data})
 
 
 @csrf_exempt
@@ -612,4 +648,128 @@ def marcar_notificacion_vista(request, oferta_id):
             return JsonResponse({'success': True})
     
     return JsonResponse({'error': 'No autorizado'}, status=403)
+
+
+def ofertas(request):
+    # Obtenemos el usuario que inició sesión
+    usuario_contexto = get_usuario(request)
+    usuario = usuario_contexto.get('usuario')
+
+    if usuario is None:
+        messages.error(request, 'Debes iniciar sesión para poder ver las ofertas que te han hecho')
+        return redirect('login')
+    
+    # Obtener el ID del usuario desde el diccionario
+    usuario_id = usuario.get('id')
+    
+    # Filtrar las ofertas donde el usuario es el receptor
+    ofertas_recibidas = Oferta.objects.filter(receptor_id=usuario_id).select_related('comic', 'emisor')
+
+    contexto = {
+        'titulo': 'Ofertas',
+        'ofertas': ofertas_recibidas
+    }
+
+    return render(request, 'mainapp/ofertas.html', contexto)
+
+def aceptar_oferta(request, id_oferta):
+    # Obtenemos el usuario que inició sesión
+    usuario_contexto = get_usuario(request)
+    usuario = usuario_contexto.get('usuario')
+
+    # Verificamos que se haya iniciado sesión
+    if usuario is None:
+        return JsonResponse({'success': False, 'error': 'Se necesita iniciar sesión para aceptar una oferta'}, status=403)
+
+    # Verificamos que el rol del usuario sea de un vendedor
+    if usuario['rol'] != 3:  # Asumimos que el rol 3 corresponde a vendedores
+        return JsonResponse({'success': False, 'error': 'Solo los usuarios con rol de vendedor pueden aceptar ofertas'}, status=403)
+
+    # Obtenemos la oferta
+    oferta = get_object_or_404(Oferta, id_oferta=id_oferta)
+
+    # Verificamos que el usuario actual sea el receptor de la oferta
+    if oferta.receptor.id_usuario != usuario['id']:
+        return JsonResponse({'success': False, 'error': 'No puedes aceptar una oferta que no te pertenece'}, status=403)
+
+    # Aceptamos la oferta
+    oferta.aceptada = True
+    oferta.visto = True
+    oferta.save()
+
+    # Marcamos otras ofertas del mismo cómic como rechazadas
+    Oferta.objects.filter(comic=oferta.comic, aceptada__isnull=True).exclude(id_oferta=id_oferta).update(aceptada=False, visto=True)
+
+    # Creamos un registro de venta
+    Venta.objects.create(
+        comic=oferta.comic,
+        comprador=oferta.emisor,
+        oferta=oferta
+    )
+
+    # Enviamos un mensaje al comprador
+    Mensaje.objects.create(
+        emisor_id=oferta.receptor.id_usuario,  # El vendedor que acepta
+        receptor_id=oferta.emisor.id_usuario,  # El comprador al que se notifica
+        contenido=f"Tu oferta por el cómic '{oferta.comic.nombre}' ha sido aceptada."
+    )
+
+    # Creamos una notificación para el comprador
+    Notificacion.objects.create(
+        usuario_id=oferta.emisor.id_usuario,  # El comprador que debe ser notificado
+        contenido=f"¡Felicidades! Tu oferta por el cómic '{oferta.comic.nombre}' ha sido aceptada."
+    )
+
+    return JsonResponse({'success': True, 'message': 'La oferta ha sido aceptada exitosamente'}, status=200)
+
+def rechazar_oferta(request, id_oferta):
+    # Obtenemos el usuario que inició sesión
+    usuario_contexto = get_usuario(request)
+    usuario = usuario_contexto.get('usuario')
+
+    # Verificamos que se haya iniciado sesión
+    if usuario is None:
+        return JsonResponse({'success': False, 'error': 'Se necesita iniciar sesión para rechazar una oferta'}, status=403)
+
+    # Verificamos que el rol del usuario sea de un vendedor
+    if usuario['rol'] != 3:  # Asumimos que el rol 3 corresponde a vendedores
+        return JsonResponse({'success': False, 'error': 'Solo los usuarios con rol de vendedor pueden rechazar ofertas'}, status=403)
+
+    # Obtenemos la oferta
+    oferta = get_object_or_404(Oferta, id_oferta=id_oferta)
+
+    # Verificamos que el usuario actual sea el receptor de la oferta
+    if oferta.receptor.id_usuario != usuario['id']:
+        return JsonResponse({'success': False, 'error': 'No puedes rechazar una oferta que no te pertenece'}, status=403)
+
+    # Rechazamos la oferta (establecemos aceptada como False)
+    oferta.aceptada = False
+    oferta.visto = True
+    oferta.save()
+
+    # Creamos un mensaje para el comprador
+    Mensaje.objects.create(
+        emisor_id=oferta.receptor.id_usuario,  # El vendedor que rechaza
+        receptor_id=oferta.emisor.id_usuario,  # El comprador al que se notifica
+        contenido=f"Tu oferta por el cómic '{oferta.comic.nombre}' ha sido rechazada."
+    )
+
+    # Creamos una notificación para el comprador
+    Notificacion.objects.create(
+        usuario_id=oferta.emisor.id_usuario,  # El comprador que debe ser notificado
+        contenido=f"Tu oferta por el cómic '{oferta.comic.nombre}' ha sido rechazada."
+    )
+
+    return JsonResponse({'success': True, 'message': 'La oferta ha sido rechazada exitosamente'}, status=200)
+
+def detalle_oferta(request, id_oferta):
+    # Verificamos que la oferta exista
+    oferta = get_object_or_404(Oferta, id_oferta=id_oferta)
+    contexto = {
+        'titulo': 'Detalle de la oferta',
+        'oferta': oferta
+    }
+    return render(request, 'mainapp/detalle_oferta.html', contexto)
+
+    
 

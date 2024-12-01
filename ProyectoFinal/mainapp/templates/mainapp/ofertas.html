@@ -1,0 +1,63 @@
+<!-- Agregamos el layout -->
+{% extends '../layouts/layout.html' %}
+
+<!-- Folder static -->
+{% load static %}
+
+{% block titulo %}
+    {{ titulo }}
+{% endblock %}
+
+<!-- Contenido principal -->
+{% block content %}   
+    <!--Estilos  -->
+    <link rel="stylesheet" href="{% static 'css/ofertas.css' %}">
+    <div id="main-container">
+        <div id="ofertas-container">
+            <!-- Titulo -->
+            <div class="titulo">
+                <i class="fa-solid fa-arrow-left back" onclick="backPage()" style="cursor: pointer;"></i>
+                <h4>{{ titulo }}</h4>
+                <i class="fa-solid fa-x tache"></i>
+            </div>
+            <!-- Ofertas -->
+            <div id="ofertas">
+                {% for oferta in ofertas %}
+                    <div id="oferta-{{ oferta.id_oferta }}" class="oferta">
+                        <div class="imagen-container">                            
+                            <a href="{% url 'detalle_oferta' oferta.id_oferta %}">
+                                <img src="{{ oferta.imagen.url }}" alt="">
+                            </a>
+                        </div>
+                        <div class="info-container">                            
+                            <p class="objeto">
+                                <a href="{% url 'detalle_oferta' oferta.id_oferta %}">
+                                    <span class="bold">{{ oferta.objeto|slice:":30" }}{% if comic.objeto|length > 30 %}...{% endif %}</span>
+                                </a>
+                            </p>                            
+                            <p class="descripcion">
+                                {{ oferta.descripcion|slice:":85" }}{% if comic.descripcion|length > 85 %}...{% endif %}
+                            </p>
+                        </div>
+                        {% if oferta.aceptada is None %}
+                            <button class="btn btn-aceptar" onclick="aceptarOferta({{ oferta.id_oferta }})">
+                                <i class="fa-solid fa-handshake"></i> Aceptar oferta
+                            </button>
+                            <button class="btn btn-rechazar" onclick="rechazarOferta({{ oferta.id_oferta }})">
+                                <i class="fa-solid fa-xmark"></i>Rechazar oferta
+                            </button>
+                        {% else %}
+                            {% if oferta.aceptada == True %}
+                                <p><span class="aceptada">Oferta aceptada</span></p>
+                            {% else %}
+                                <p><span class="rechazada">Oferta rechazada</span></p>
+                            {% endif %}
+                        {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>    
+    <!-- Javascript -->
+    <script src="{% static 'js/ofertas.js' %}"></script>
+{% endblock %}

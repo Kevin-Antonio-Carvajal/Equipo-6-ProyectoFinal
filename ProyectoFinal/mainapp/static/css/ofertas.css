@@ -1,0 +1,113 @@
+/* Contenedor principal */
+#main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.titulo {
+    color: #252525;
+    display:  flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.titulo i.back:hover {
+    color: #ffc510;    
+}
+
+.titulo i.tache {
+    visibility: hidden;
+}
+
+#ofertas-container {
+    padding: 24px 0px;
+}
+
+#ofertas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.oferta {
+    width: 240px;
+    background-color: #FFFFFF;
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: small;
+}
+
+.oferta .imagen-container a {
+    height: 150px; /* Define la altura deseada para el contenedor */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Oculta cualquier parte de la imagen que se salga del contenedor */
+    border-radius: 8px; /* Opcional: redondear los bordes */
+    background-color: #f0f0f0; /* Opcional: color de fondo del contenedor */
+}
+
+.oferta .imagen-container a img {
+    max-width: 100%; /* Asegura que la imagen no exceda el ancho del contenedor */
+    max-height: 100%; /* Asegura que la imagen no exceda la altura del contenedor */
+    object-fit: cover; /* Corta la imagen para que llene el contenedor proporcionalmente */
+}
+
+.oferta p {
+    margin: 8px 0px;
+    padding: 0;
+}
+
+p.objeto a {
+    text-decoration: none;
+    color: #252525;
+}
+p.objeto a:hover {
+    color: #4c94f6;
+}
+
+span.bold {
+    font-weight: bold;
+}
+
+button i {
+    margin-right: 8px;
+}
+
+button.btn-aceptar {
+    width: 100%;
+    background-color: #ffc510;
+    border-radius: 8px;
+    color: #FFFFFF;
+}
+
+button.btn-aceptar:hover {
+    color: #FFFFFF;
+    background-color: #f6db35;
+}
+
+
+button.btn-rechazar {
+    margin-top: 8px;
+    width: 100%;
+    background-color: #ee5454;
+    border-radius: 8px;
+    color: #FFFFFF;
+}
+
+button.btn-rechazar:hover {
+    background-color: #f17474;
+    color: #FFFFFF;
+}
+
+span.aceptada {
+    color: #4c94f6;
+}
+
+span.rechazada {
+    color: #ee5454;
+}

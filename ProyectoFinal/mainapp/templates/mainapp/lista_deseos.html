@@ -23,16 +23,33 @@
                 <div id="comic-{{ item.comic.id_comic }}" class="comic"  data-comic-id="{{ item.comic.id_comic }}">
                     <img src="{{ item.comic.imagen.url }}" alt="Imagen del cómic">
                     <h3>{{ item.comic.nombre }}</h3>                    
-                    <p>{{ item.comic.descripcion|slice:":100" }}...</p>                
+                    <p>{{ item.comic.descripcion|slice:":100" }}...</p>
+                    <p class="estatus">
+                        <span class="bold">Estatus: </span>
+                        {% if item.oferta_estado is None %}
+                            <span class="pendiente">pendiente</span>
+                        {% else %}
+                            {% if item.oferta_estado == True %}
+                                <span class="aceptada">aceptada</span>
+                            {% else %}
+                                <span class="rechazada">rechazada</span>
+                            {% endif %}
+                        {% endif %}
+                    </p>
                     <div id="botones">
+                    {% if item.oferta_estado != True %}
                         <!-- Verificamos si hay una oferta relacionada -->
                         {% if not item.oferta_relacionada %}
                         <form method="POST" action="{% url 'hacer_oferta' item.comic.id_comic %}" class="oferta-form">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-primary">Hacer oferta</button>
                         </form>
+                        {% else %}
+                        <a class="btn ver-oferta btn-primary" href="{% url 'detalle_oferta' item.oferta_id %}">Ver oferta</a>
                         {% endif %}
-                        <button class="btn-eliminar-comic" onclick="eliminarComic({{ item.comic.id_comic }})">Eliminar</button>                        
+                        <!-- Verificamos si la oferta ya fue rechazada/aceptada -->                        
+                        <button class="btn btn-eliminar-comic" onclick="eliminarComic({{ item.comic.id_comic }})">Eliminar</button>
+                    {% endif %}
                     </div>
                 </div>
                 {% endfor %} 

@@ -95,6 +95,30 @@ body {
     display: none;
 }
 
+/* Estilo del contador de notificaciones */
+#mensajes-count {
+    position: absolute;
+    top: -2px;
+    right: -2px; 
+    background-color: #ff3b3b;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+/* Ocultar el contador si no hay notificaciones */
+#mensajes-count:empty {
+    display: none;
+}
+
 /* Contenedor de la lista de notificaciones */
 #notificaciones-list {
     max-height: 400px; 

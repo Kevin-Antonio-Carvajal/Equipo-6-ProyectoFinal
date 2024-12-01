@@ -2,6 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Obtenemos la barra de busqueda
     const barraBusqueda = document.getElementById('barra-busqueda')
+    console.log(barraBusqueda)
     const input = barraBusqueda.querySelector("input[type='search']")
     // Obtenemos lo que el usuario busco
     const dataBusqueda = document.getElementById('data-busqueda').getAttribute('data-busqueda')

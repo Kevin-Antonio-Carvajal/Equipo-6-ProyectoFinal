@@ -1,0 +1,107 @@
+#main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#oferta-container {
+    padding: 20px 0px;
+}
+
+.titulo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.tache {
+    visibility: hidden;
+}
+
+i.back {
+    cursor: pointer;
+}
+
+i.back:hover {
+    color: #ffc510;
+}
+
+.oferta {
+    display: flex;
+    width: 800px;
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.oferta div.imagen-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Oculta cualquier parte de la imagen que se salga del contenedor */
+    border-radius: 8px; /* Opcional: redondear los bordes */
+}
+
+.oferta div.imagen-container img {
+    max-width: 100%; 
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+
+#oferta-info {
+    padding: 0px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+span.bold {
+    font-weight: bold;
+}
+
+span.pendiente {
+    color: #ffc510;
+}
+
+span.aceptada {
+    color: #4c94f6;
+}
+
+span.rechazada {
+    color: #ee5454;
+}
+
+.botones {
+    display: flex;
+    gap: 8px;
+}
+
+.botones button {
+    color: #FFFFFF;
+    width: 100%;
+}
+
+.botones button i {
+    margin-right: 8px;
+}
+
+button.btn-aceptar {
+    background-color: #ffc510;
+}
+
+button.btn-aceptar:hover {
+    background-color: #f6db35;
+    color: #FFFFFF;
+}
+
+button.btn-rechazar {
+    background-color: #ee5454;    
+}
+
+button.btn-rechazar:hover {
+    background-color: #f17474;
+    color: #FFFFFF;
+}
