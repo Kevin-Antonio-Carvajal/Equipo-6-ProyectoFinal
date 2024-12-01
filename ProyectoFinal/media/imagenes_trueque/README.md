@@ -1,0 +1,1 @@
+# Aqui se guardan las imagenes de los objetos
