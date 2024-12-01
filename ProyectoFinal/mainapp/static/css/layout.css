@@ -219,6 +219,7 @@ body {
     }
 
     /* Excepción para siempre mostrar estos íconos */
+    .nav-link i.fas.fa-heart,
     .nav-link i.fas.fa-bell,
     .nav-link i.fas.fa-comments {
         display: inline !important; 
